@@ -1,0 +1,391 @@
+Validação: 19/10/2026 09:23:27 -03
+OK - Somente os cinco rótulos raciais indicados entram nos dois grupos
+OK - Fronteiras de 18, 34, 35, 59 e 60 anos classificadas corretamente
+OK - Níveis dos fatores raciais e etários fixados
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_dia sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_dia sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_noite sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_noite sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_dia raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_dia raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_noite raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_noite raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_dia idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_dia idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_dia idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_noite idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_noite idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_noite idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_dia quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_dia quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_dia quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_dia quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_noite quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_noite quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_noite quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_noite quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_dia sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_dia sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_noite sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_noite sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_barulho_ocorrencia sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_barulho_ocorrencia sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pichacoes_ocorrencia sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pichacoes_ocorrencia sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pessoas_em_situacao_de_rua_ocorrencia sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pessoas_em_situacao_de_rua_ocorrencia sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_arruaca_ocorrencia sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_arruaca_ocorrencia sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_vandalismo_ocorrencia sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_vandalismo_ocorrencia sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_gangues_ocorrencia sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_gangues_ocorrencia sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_trafico_drogas_ocorrencia sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_trafico_drogas_ocorrencia sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_dia raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_dia raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_noite raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_noite raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_barulho_ocorrencia raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_barulho_ocorrencia raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pichacoes_ocorrencia raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pichacoes_ocorrencia raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pessoas_em_situacao_de_rua_ocorrencia raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pessoas_em_situacao_de_rua_ocorrencia raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_arruaca_ocorrencia raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_arruaca_ocorrencia raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_vandalismo_ocorrencia raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_vandalismo_ocorrencia raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_gangues_ocorrencia raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_gangues_ocorrencia raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_trafico_drogas_ocorrencia raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_trafico_drogas_ocorrencia raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_dia idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_dia idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_dia idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_noite idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_noite idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_noite idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_barulho_ocorrencia idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_barulho_ocorrencia idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_barulho_ocorrencia idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pichacoes_ocorrencia idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pichacoes_ocorrencia idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pichacoes_ocorrencia idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pessoas_em_situacao_de_rua_ocorrencia idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pessoas_em_situacao_de_rua_ocorrencia idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pessoas_em_situacao_de_rua_ocorrencia idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_arruaca_ocorrencia idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_arruaca_ocorrencia idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_arruaca_ocorrencia idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_vandalismo_ocorrencia idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_vandalismo_ocorrencia idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_vandalismo_ocorrencia idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_gangues_ocorrencia idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_gangues_ocorrencia idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_gangues_ocorrencia idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_trafico_drogas_ocorrencia idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_trafico_drogas_ocorrencia idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_trafico_drogas_ocorrencia idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_dia quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_dia quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_dia quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_dia quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_noite quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_noite quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_noite quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2005 inseguranca_noite quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_barulho_ocorrencia quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_barulho_ocorrencia quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_barulho_ocorrencia quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_barulho_ocorrencia quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pichacoes_ocorrencia quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pichacoes_ocorrencia quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pichacoes_ocorrencia quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pichacoes_ocorrencia quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pessoas_em_situacao_de_rua_ocorrencia quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pessoas_em_situacao_de_rua_ocorrencia quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pessoas_em_situacao_de_rua_ocorrencia quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_pessoas_em_situacao_de_rua_ocorrencia quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_arruaca_ocorrencia quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_arruaca_ocorrencia quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_arruaca_ocorrencia quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_arruaca_ocorrencia quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_vandalismo_ocorrencia quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_vandalismo_ocorrencia quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_vandalismo_ocorrencia quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_vandalismo_ocorrencia quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_gangues_ocorrencia quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_gangues_ocorrencia quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_gangues_ocorrencia quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_gangues_ocorrencia quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_trafico_drogas_ocorrencia quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_trafico_drogas_ocorrencia quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_trafico_drogas_ocorrencia quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2005 desordem_trafico_drogas_ocorrencia quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_dia sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_dia sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_noite sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_noite sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_barulho_ocorrencia sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_barulho_ocorrencia sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pichacoes_ocorrencia sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pichacoes_ocorrencia sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pessoas_em_situacao_de_rua_ocorrencia sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pessoas_em_situacao_de_rua_ocorrencia sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_arruaca_ocorrencia sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_arruaca_ocorrencia sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_vandalismo_ocorrencia sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_vandalismo_ocorrencia sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_gangues_ocorrencia sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_gangues_ocorrencia sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_trafico_drogas_ocorrencia sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_trafico_drogas_ocorrencia sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_prostituicao_ocorrencia sexo Homem
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_prostituicao_ocorrencia sexo Mulher
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_dia raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_dia raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_noite raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_noite raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_barulho_ocorrencia raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_barulho_ocorrencia raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pichacoes_ocorrencia raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pichacoes_ocorrencia raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pessoas_em_situacao_de_rua_ocorrencia raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pessoas_em_situacao_de_rua_ocorrencia raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_arruaca_ocorrencia raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_arruaca_ocorrencia raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_vandalismo_ocorrencia raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_vandalismo_ocorrencia raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_gangues_ocorrencia raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_gangues_ocorrencia raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_trafico_drogas_ocorrencia raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_trafico_drogas_ocorrencia raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_prostituicao_ocorrencia raca_grupo Brancos
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_prostituicao_ocorrencia raca_grupo Negros
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_dia idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_dia idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_dia idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_noite idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_noite idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_noite idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_barulho_ocorrencia idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_barulho_ocorrencia idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_barulho_ocorrencia idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pichacoes_ocorrencia idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pichacoes_ocorrencia idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pichacoes_ocorrencia idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pessoas_em_situacao_de_rua_ocorrencia idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pessoas_em_situacao_de_rua_ocorrencia idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pessoas_em_situacao_de_rua_ocorrencia idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_arruaca_ocorrencia idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_arruaca_ocorrencia idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_arruaca_ocorrencia idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_vandalismo_ocorrencia idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_vandalismo_ocorrencia idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_vandalismo_ocorrencia idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_gangues_ocorrencia idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_gangues_ocorrencia idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_gangues_ocorrencia idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_trafico_drogas_ocorrencia idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_trafico_drogas_ocorrencia idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_trafico_drogas_ocorrencia idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_prostituicao_ocorrencia idade_grupo 18–34
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_prostituicao_ocorrencia idade_grupo 35–59
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_prostituicao_ocorrencia idade_grupo 60+
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_dia quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_dia quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_dia quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_dia quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_noite quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_noite quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_noite quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2008 inseguranca_noite quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_barulho_ocorrencia quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_barulho_ocorrencia quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_barulho_ocorrencia quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_barulho_ocorrencia quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pichacoes_ocorrencia quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pichacoes_ocorrencia quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pichacoes_ocorrencia quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pichacoes_ocorrencia quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pessoas_em_situacao_de_rua_ocorrencia quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pessoas_em_situacao_de_rua_ocorrencia quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pessoas_em_situacao_de_rua_ocorrencia quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_pessoas_em_situacao_de_rua_ocorrencia quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_arruaca_ocorrencia quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_arruaca_ocorrencia quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_arruaca_ocorrencia quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_arruaca_ocorrencia quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_vandalismo_ocorrencia quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_vandalismo_ocorrencia quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_vandalismo_ocorrencia quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_vandalismo_ocorrencia quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_gangues_ocorrencia quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_gangues_ocorrencia quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_gangues_ocorrencia quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_gangues_ocorrencia quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_trafico_drogas_ocorrencia quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_trafico_drogas_ocorrencia quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_trafico_drogas_ocorrencia quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_trafico_drogas_ocorrencia quartil_renda Q4
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_prostituicao_ocorrencia quartil_renda Q1
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_prostituicao_ocorrencia quartil_renda Q2
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_prostituicao_ocorrencia quartil_renda Q3
+OK - Estimativa e denominador sem filtro adicional: 2008 desordem_prostituicao_ocorrencia quartil_renda Q4
+OK - Elegibilidade e exclusões por recorte: 2002
+OK - Raça excluída não remove entrevistas do recorte etário: 2002
+OK - Elegibilidade e exclusões por recorte: 2005
+OK - Raça excluída não remove entrevistas do recorte etário: 2005
+OK - Elegibilidade e exclusões por recorte: 2008
+OK - Raça excluída não remove entrevistas do recorte etário: 2008
+OK - Categorias de resposta somam 100% dentro de cada grupo
+OK - IC válidos contêm a proporção; IC indisponíveis não conservam um único limite
+OK - Ocorrência não foi inventada a partir da gravidade de 2002
+OK - Prostituição não foi estimada para 2005
+OK - Todas as estimativas de sexo foram mantidas
+OK - Sexo preservado: n_validos
+OK - Sexo preservado: n_categoria
+OK - Sexo preservado: proporcao
+OK - Sexo preservado: ic_inferior
+OK - Sexo preservado: ic_superior
+OK - Testes e ajustes BH dos anexos por sexo foram preservados
+OK - Marcações de significância por sexo foram mantidas
+OK - BH dos novos recortes: 2002 Insegurança idade_grupo
+OK - BH dos novos recortes: 2005 Insegurança idade_grupo
+OK - BH dos novos recortes: 2008 Insegurança idade_grupo
+OK - BH dos novos recortes: 2005 Ocorrência de desordem social idade_grupo
+OK - BH dos novos recortes: 2008 Ocorrência de desordem social idade_grupo
+OK - BH dos novos recortes: 2002 Insegurança quartil_renda
+OK - BH dos novos recortes: 2005 Insegurança quartil_renda
+OK - BH dos novos recortes: 2008 Insegurança quartil_renda
+OK - BH dos novos recortes: 2005 Ocorrência de desordem social quartil_renda
+OK - BH dos novos recortes: 2008 Ocorrência de desordem social quartil_renda
+OK - BH dos novos recortes: 2002 Insegurança raca_grupo
+OK - BH dos novos recortes: 2005 Insegurança raca_grupo
+OK - BH dos novos recortes: 2008 Insegurança raca_grupo
+OK - BH dos novos recortes: 2005 Ocorrência de desordem social raca_grupo
+OK - BH dos novos recortes: 2008 Ocorrência de desordem social raca_grupo
+OK - Testes etários são globais entre três grupos
+OK - Arquivo preservado nesta revisão: R/funcoes_analise.R
+OK - Arquivo preservado nesta revisão: R/preparar_dados.R
+OK - Arquivo preservado nesta revisão: dados/tratados/bh_svy_2002_2005_2008.rds
+OK - Arquivo preservado nesta revisão: dados/tratados/bh_svy_2002_2005_2008.csv
+OK - Arquivo preservado nesta revisão: dados/brutos/PRMBH_2008.sav
+OK - Arquivo preservado nesta revisão: dados/brutos/PRMBH_2002.sav
+OK - Arquivo preservado nesta revisão: dados/brutos/PRMBH_2005.sav
+OK - Arquivo preservado nesta revisão: resultados/frequencias/prevalencias_e_testes.csv
+OK - Arquivo preservado nesta revisão: resultados/frequencias/testes_diferencas_entre_grupos.csv
+OK - Arquivo preservado nesta revisão: resultados/frequencias/cortes_quartis_renda.csv
+OK - Arquivo preservado nesta revisão: resultados/frequencias/inseguranca_por_sexo.csv
+OK - Arquivo preservado nesta revisão: resultados/frequencias/inseguranca_por_raca.csv
+OK - Arquivo preservado nesta revisão: resultados/frequencias/inseguranca_por_grupo_etario.csv
+OK - Arquivo preservado nesta revisão: resultados/frequencias/inseguranca_por_renda.csv
+OK - Arquivo preservado nesta revisão: resultados/frequencias/desordem_por_sexo.csv
+OK - Arquivo preservado nesta revisão: resultados/frequencias/desordem_por_raca.csv
+OK - Arquivo preservado nesta revisão: resultados/frequencias/desordem_por_grupo_etario.csv
+OK - Arquivo preservado nesta revisão: resultados/frequencias/desordem_por_renda.csv
+OK - Executor inclui as regressões de sexo e raça
+OK - Os oito gráficos de frequência foram exportados em PNG e PDF
+OK - Corte ponderado: 2002 1
+OK - Corte ponderado: 2002 2
+OK - Corte ponderado: 2002 3
+OK - Empates preservados: 2002
+OK - Corte ponderado: 2005 1
+OK - Corte ponderado: 2005 2
+OK - Corte ponderado: 2005 3
+OK - Empates preservados: 2005
+OK - Corte ponderado: 2008 1
+OK - Corte ponderado: 2008 2
+OK - Corte ponderado: 2008 3
+OK - Empates preservados: 2008
+OK - Renda desconhecida não recebe quartil
+OK - Renda corresponde aos componentes registrados
+OK - Covariância confrontada com cálculo ponderado direto: 2002
+OK - Bloco aplicado simétrico e sem autovalores negativos: 2002
+OK - Categorias nominais são indicadores 0/1: 2002
+OK - Estado civil removido e oito indicadores de desordem incluídos: 2002
+OK - Itens não aplicados são NA; bloco medido permanece estimável: 2002
+OK - Aplicação de ocorrência conforme rodada: 2002
+OK - Casos completos somente em indicadores aplicados: 2002
+OK - Covariância confrontada com cálculo ponderado direto: 2005
+OK - Bloco aplicado simétrico e sem autovalores negativos: 2005
+OK - Categorias nominais são indicadores 0/1: 2005
+OK - Estado civil removido e oito indicadores de desordem incluídos: 2005
+OK - Itens não aplicados são NA; bloco medido permanece estimável: 2005
+OK - Aplicação de ocorrência conforme rodada: 2005
+OK - Casos completos somente em indicadores aplicados: 2005
+OK - Covariância confrontada com cálculo ponderado direto: 2008
+OK - Bloco aplicado simétrico e sem autovalores negativos: 2008
+OK - Categorias nominais são indicadores 0/1: 2008
+OK - Estado civil removido e oito indicadores de desordem incluídos: 2008
+OK - Itens não aplicados são NA; bloco medido permanece estimável: 2008
+OK - Aplicação de ocorrência conforme rodada: 2008
+OK - Casos completos somente em indicadores aplicados: 2008
+OK - Dez modelos estimados com sexo, raça e quartil de renda
+OK - Regressões usam os mesmos cortes ponderados das frequências, antes da seleção dos casos
+OK - Renda é fator nominal com quatro níveis; sem contraste polinomial ou escore contínuo
+OK - Todos os modelos convergiram sem alertas de instabilidade
+OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2002_dia_principal
+OK - Amostra exige renda válida e independe de idade e desordem: 2002_dia_principal
+OK - Referências Homem, Brancos e Q1: 2002_dia_principal
+OK - Coeficientes satisfazem escore logístico ponderado: 2002_dia_principal
+OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2002_dia_principal
+OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2002_noite_principal
+OK - Amostra exige renda válida e independe de idade e desordem: 2002_noite_principal
+OK - Referências Homem, Brancos e Q1: 2002_noite_principal
+OK - Coeficientes satisfazem escore logístico ponderado: 2002_noite_principal
+OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2002_noite_principal
+OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2005_dia_principal
+OK - Amostra exige renda válida e independe de idade e desordem: 2005_dia_principal
+OK - Referências Homem, Brancos e Q1: 2005_dia_principal
+OK - Coeficientes satisfazem escore logístico ponderado: 2005_dia_principal
+OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2005_dia_principal
+OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2005_dia_sem_neutros
+OK - Amostra exige renda válida e independe de idade e desordem: 2005_dia_sem_neutros
+OK - Referências Homem, Brancos e Q1: 2005_dia_sem_neutros
+OK - Coeficientes satisfazem escore logístico ponderado: 2005_dia_sem_neutros
+OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2005_dia_sem_neutros
+OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2005_noite_principal
+OK - Amostra exige renda válida e independe de idade e desordem: 2005_noite_principal
+OK - Referências Homem, Brancos e Q1: 2005_noite_principal
+OK - Coeficientes satisfazem escore logístico ponderado: 2005_noite_principal
+OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2005_noite_principal
+OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2005_noite_sem_neutros
+OK - Amostra exige renda válida e independe de idade e desordem: 2005_noite_sem_neutros
+OK - Referências Homem, Brancos e Q1: 2005_noite_sem_neutros
+OK - Coeficientes satisfazem escore logístico ponderado: 2005_noite_sem_neutros
+OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2005_noite_sem_neutros
+OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2008_dia_principal
+OK - Amostra exige renda válida e independe de idade e desordem: 2008_dia_principal
+OK - Referências Homem, Brancos e Q1: 2008_dia_principal
+OK - Coeficientes satisfazem escore logístico ponderado: 2008_dia_principal
+OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2008_dia_principal
+OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2008_dia_sem_neutros
+OK - Amostra exige renda válida e independe de idade e desordem: 2008_dia_sem_neutros
+OK - Referências Homem, Brancos e Q1: 2008_dia_sem_neutros
+OK - Coeficientes satisfazem escore logístico ponderado: 2008_dia_sem_neutros
+OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2008_dia_sem_neutros
+OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2008_noite_principal
+OK - Amostra exige renda válida e independe de idade e desordem: 2008_noite_principal
+OK - Referências Homem, Brancos e Q1: 2008_noite_principal
+OK - Coeficientes satisfazem escore logístico ponderado: 2008_noite_principal
+OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2008_noite_principal
+OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2008_noite_sem_neutros
+OK - Amostra exige renda válida e independe de idade e desordem: 2008_noite_sem_neutros
+OK - Referências Homem, Brancos e Q1: 2008_noite_sem_neutros
+OK - Coeficientes satisfazem escore logístico ponderado: 2008_noite_sem_neutros
+OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2008_noite_sem_neutros
+OK - Referências sem incerteza artificial
+OK - Três gráficos de OR exportados em PNG e PDF
+OK - Arquivos dos gráficos de OR têm conteúdo, sem exportações vazias
+OK - Assinatura PNG válida: odds_raca.png
+OK - Assinatura PNG válida: odds_renda.png
+OK - Assinatura PNG válida: odds_sexo.png
+OK - Gráfico de renda contém 18 OR: três quartis versus Q1, em seis modelos ajustados
+OK - Relatório usa hífen no lugar do travessão
+OK - Raça usa cores diferentes de vermelho e azul
+OK - 52 arquivos de frequência e covariância preservados em bytes.
+OK - Excel: abas Frequências, Covariâncias e Renda preservadas; aba Regressões atualizada.
+OK - Relatórios HTML: exportações, filtro e tabela das OR de renda verificados.
+OK - Três PNGs íntegros e três PDFs de uma página verificados.

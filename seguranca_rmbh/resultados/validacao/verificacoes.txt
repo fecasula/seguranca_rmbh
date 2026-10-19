@@ -1,0 +1,74 @@
+Validação: 06/10/2026 02:08:35 CST
+OK — Percentual e denominador: 2002 Homem dia
+OK — Percentual e denominador: 2002 Homem noite
+OK — Percentual e denominador: 2002 Mulher dia
+OK — Percentual e denominador: 2002 Mulher noite
+OK — Percentual e denominador: 2005 Homem dia
+OK — Percentual e denominador: 2005 Homem noite
+OK — Percentual e denominador: 2005 Mulher dia
+OK — Percentual e denominador: 2005 Mulher noite
+OK — Percentual e denominador: 2008 Homem dia
+OK — Percentual e denominador: 2008 Homem noite
+OK — Percentual e denominador: 2008 Mulher dia
+OK — Percentual e denominador: 2008 Mulher noite
+OK — Categorias válidas somam 100% dentro de cada domínio
+OK — Ausência de respostas não foi convertida em zero
+OK — IC não estimável não conserva apenas um limite
+OK — IC válidos contêm a estimativa e ficam entre 0 e 1
+OK — BH por família: 2002 Distribuição original de segurança
+OK — BH por família: 2005 Distribuição original de segurança
+OK — BH por família: 2008 Distribuição original de segurança
+OK — BH por família: 2005 Ocorrência de desordem social
+OK — BH por família: 2008 Ocorrência de desordem social
+OK — BH por família: 2002 Segurança X Variáveis Sociodemográficas
+OK — BH por família: 2005 Segurança X Variáveis Sociodemográficas
+OK — BH por família: 2008 Segurança X Variáveis Sociodemográficas
+OK — Gravidade de 2002 não foi convertida em ocorrência
+OK — Prostituição não foi estimada para 2005
+OK — Escolaridade nominal mantém levels explícitos
+OK — Segurança ausente não recebe zero no desfecho
+OK — Definições principal e de sensibilidade preservam neutralidade
+OK — Reescalonar pesos não altera a proporção ou seu erro padrão
+OK — Seis modelos principais e quatro sensibilidades foram estimados
+OK — Modelo contém apenas sua rodada: 2002_dia_principal
+OK — OR corresponde a exp(beta): 2002_dia_principal
+OK — p e IC usam os graus de liberdade do modelo: 2002_dia_principal
+OK — IC corresponde a confint(svyglm): 2002_dia_principal
+OK — Modelo contém apenas sua rodada: 2002_noite_principal
+OK — OR corresponde a exp(beta): 2002_noite_principal
+OK — p e IC usam os graus de liberdade do modelo: 2002_noite_principal
+OK — IC corresponde a confint(svyglm): 2002_noite_principal
+OK — Modelo contém apenas sua rodada: 2005_dia_principal
+OK — OR corresponde a exp(beta): 2005_dia_principal
+OK — p e IC usam os graus de liberdade do modelo: 2005_dia_principal
+OK — IC corresponde a confint(svyglm): 2005_dia_principal
+OK — Modelo contém apenas sua rodada: 2005_dia_sem_neutros
+OK — OR corresponde a exp(beta): 2005_dia_sem_neutros
+OK — p e IC usam os graus de liberdade do modelo: 2005_dia_sem_neutros
+OK — IC corresponde a confint(svyglm): 2005_dia_sem_neutros
+OK — Modelo contém apenas sua rodada: 2005_noite_principal
+OK — OR corresponde a exp(beta): 2005_noite_principal
+OK — p e IC usam os graus de liberdade do modelo: 2005_noite_principal
+OK — IC corresponde a confint(svyglm): 2005_noite_principal
+OK — Modelo contém apenas sua rodada: 2005_noite_sem_neutros
+OK — OR corresponde a exp(beta): 2005_noite_sem_neutros
+OK — p e IC usam os graus de liberdade do modelo: 2005_noite_sem_neutros
+OK — IC corresponde a confint(svyglm): 2005_noite_sem_neutros
+OK — Modelo contém apenas sua rodada: 2008_dia_principal
+OK — OR corresponde a exp(beta): 2008_dia_principal
+OK — p e IC usam os graus de liberdade do modelo: 2008_dia_principal
+OK — IC corresponde a confint(svyglm): 2008_dia_principal
+OK — Modelo contém apenas sua rodada: 2008_dia_sem_neutros
+OK — OR corresponde a exp(beta): 2008_dia_sem_neutros
+OK — p e IC usam os graus de liberdade do modelo: 2008_dia_sem_neutros
+OK — IC corresponde a confint(svyglm): 2008_dia_sem_neutros
+OK — Modelo contém apenas sua rodada: 2008_noite_principal
+OK — OR corresponde a exp(beta): 2008_noite_principal
+OK — p e IC usam os graus de liberdade do modelo: 2008_noite_principal
+OK — IC corresponde a confint(svyglm): 2008_noite_principal
+OK — Modelo contém apenas sua rodada: 2008_noite_sem_neutros
+OK — OR corresponde a exp(beta): 2008_noite_sem_neutros
+OK — p e IC usam os graus de liberdade do modelo: 2008_noite_sem_neutros
+OK — IC corresponde a confint(svyglm): 2008_noite_sem_neutros
+OK — Modelos convergiram sem alerta de instabilidade
+OK — Os 23 gráficos foram exportados em PNG e PDF

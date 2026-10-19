@@ -1,0 +1,4 @@
+﻿"ano_rodada";"n_rodada";"n_renda_valida";"n_renda_ausente";"corte_25_reais";"corte_50_reais";"corte_75_reais";"metodo"
+"2002";"1029";"819";"210";"200";"400";"900";"Quantis ponderados: svyquantile, qrule=math; empates preservados"
+"2005";"1122";"1032";"90";"0";"380";"922";"Quantis ponderados: svyquantile, qrule=math; empates preservados"
+"2008";"742";"673";"69";"415";"700";"1320";"Quantis ponderados: svyquantile, qrule=math; empates preservados"
