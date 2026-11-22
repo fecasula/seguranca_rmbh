@@ -1,9 +1,7 @@
-# Segurança e desordem social na RMBH - sexo, raça e renda
+# Segurança e desordem social na RMBH
 
-Esta versão inclui quartil de renda na regressão logística, junto com sexo e
-raça, e acrescenta um gráfico das OR de Q2, Q3 e Q4 em relação a Q1, ajustadas
-por sexo e raça. Os gráficos de sexo e raça também são reestimados com renda.
-As frequências e matrizes de covariância da versão anterior são preservadas.
+Análises ponderadas da insegurança ao andar na rua e da desordem social
+relatada no bairro, por rodada do survey (2002, 2005, 2008).
 
 ## Gráficos
 
@@ -18,18 +16,19 @@ Os resultados são apresentados por rodada (2002, 2005, 2008), com pesos,
 IC95% e os testes entre os grupos. Ocorrência de desordem foi medida apenas
 em 2005/2008; prostituição foi medida apenas em 2008.
 
-### Agrupamentos solicitados
+### Grupos de raça/cor e idade
 
-- **Negros:** respostas originais preto(a), pardo(a) e indígena.
-- **Brancos:** respostas originais branco(a) e amarelo(a).
-- Todas as demais opções de raça são excluídas **apenas do recorte por raça**.
-  Isso inclui a resposta original “Negro(a)”, que não consta da lista indicada
-  para inclusão. Não respostas também permanecem excluídas desse recorte.
-- **Idade:** 18–34 (18 ≤ idade < 35), 35–59 (35 ≤ idade < 60), 60+ (idade ≥ 60).
+- **Brancos** inclui somente a resposta Branco(a).
+- **Negros** reúne as respostas Preto(a) e Pardo(a).
+- As demais respostas, inclusive a opção original Negro(a) de 2002, Amarelo(a),
+  Indígena e as não respostas, ficam fora das frequências por raça/cor, das
+  matrizes de covariância e das regressões.
+- Os grupos etários são 18–34, 35–59 e 60+. As frequências por sexo, idade e
+  renda mantêm seus próprios critérios de elegibilidade.
 
-As análises de raça, idade e renda não fazem cruzamento ou ajuste por sexo. Pessoas com
-raça excluída continuam elegíveis nas análises por idade/sexo. O agrupamento
-racial é uma definição operacional específica desta análise.
+Os recortes descritivos de raça/cor, idade e renda não são estratificados por
+sexo nem ajustados por sexo. O desenho amostral, as funções de `survey` e a
+comparação dos questionários estão na [metodologia](doc/metodologia_analises.md).
 
 ## Renda e quartis
 
@@ -62,33 +61,33 @@ no relatório. CSV, RDS e mapas de cores ficam em `covariancia/`.
 
 ## Regressões e odds ratios
 
-Modelos ponderados por ano e período (dia/noite), com a fórmula:
+Os modelos ponderados são ajustados por rodada e período (dia/noite). O
+modelo principal inclui sexo, raça/cor e quartil de renda. Em 2005 e 2008
+inclui também se a pessoa relatou tráfico de drogas no bairro. Em 2002 a
+pergunta mediu gravidade. Para 2005 e 2008 também há uma análise de
+sensibilidade que exclui as respostas neutras de insegurança.
 
-```r
-inseguranca ~ sexo + raca_grupo + quartil_renda
-```
+O modelo adicional usa o total de itens de desordem relatados, que já inclui
+tráfico. O total vai de 0 a 7 em 2005 e de 0 a 8 em 2008, quando a lista
+passou a incluir prostituição. Cada entrevista precisa ter resposta válida
+para todos os itens da rodada. A OR indica a variação multiplicativa na
+chance de declarar insegurança por item adicional relatado, com sexo,
+raça/cor e quartil de renda fixos.
 
-São seis modelos principais e quatro de sensibilidade sem respostas neutras
-(2005/2008). Sexo, raça e renda ajustam-se mutuamente, sem interação. Referências:
-Homem, Brancos e Q1. A raça usa a mesma definição das frequências. A amostra de cada
-modelo exige desfecho, sexo, raça e renda válidos; não exige idade ou
-desordem preenchidas. Quartil é fator nominal, sem supor tendência linear.
-Os cortes ponderados por rodada são os mesmos das frequências, calculados
-antes de selecionar os casos completos do modelo. Renda ausente exclui o caso
-do modelo; não se atribuem zero ou um quartil à renda desconhecida. O desenho mantém peso final e agrupamento por setor.
+As referências são Homem, Brancos e Q1. Todos os ajustes exigem desfecho
+e preditores válidos. Os quartis usam os mesmos cortes ponderados das
+frequências. O desenho usa o peso final e o agrupamento por setor.
 
-Três gráficos em `resultados/regressoes/graficos/` comparam Mulher/Homem,
-Negros/Brancos e os quartis Q2/Q3/Q4 em relação a Q1, por ano e período.
-Cada OR é controlada pelos outros dois preditores. `odds_renda.png` e
-`odds_renda.pdf` reúnem os resultados de renda em um painel de dia/noite. Pontos são OR ajustadas; barras
-são `exp(beta ± EP)`, com EP pelo desenho amostral. Trata-se de ±1 erro padrão
-de log(OR), não de desvio padrão das respostas nem de IC95%. O EP da OR por
-aproximação delta (`OR * EP`) também é exportado. IC95% e p nominal ficam nas
-tabelas retráteis; não se deve usar essas barras para concluir significância a 5%.
+Os três gráficos em `resultados/regressoes/graficos/` mostram os contrastes
+do modelo principal por sexo, raça/cor e quartil de renda. As barras mostram
+`exp(beta ± EP)`, com EP pelo desenho amostral. As tabelas exportam o IC95% e
+o p nominal, incluindo os resultados de tráfico e do total de itens.
+O resumo do modelo de contagem também está em
+[`tabela_modelos_total_desordem.csv`](resultados/regressoes/tabela_modelos_total_desordem.csv).
 
 ## Abrir os resultados
 
-Abra `resultados/frequencias/indice_graficos.html` no navegador para acessar
+Abra [o relatório integrado](resultados/frequencias/indice_graficos.html) no navegador para acessar
 os oito gráficos. Eles também estão em PNG e PDF em:
 
 - `resultados/frequencias/graficos/1_seguranca_sociodemograficas/`
@@ -147,8 +146,8 @@ source("validacao/validar_resultados.R")
 ```
 
 O relatório de verificação fica em `resultados/validacao/verificacoes.txt`.
-Leia `doc/metodologia_analises.md` para os denominadores, desenho de trabalho,
-regras de exclusão e testes. Não foram presumidos estratos oficiais.
+Leia `doc/metodologia_analises.md` para os questionários, desenho amostral, funções de estimação,
+denominadores e regras de exclusão. Não foram presumidos estratos oficiais.
 
 O `renv.lock` foi preservado e registra somente `renv`; para as dependências
 analíticas, use a instalação acima. Os anexos de referência estão em

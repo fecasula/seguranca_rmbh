@@ -1,6 +1,6 @@
 # Execute a partir da raiz do projeto seguranca_rmbh:
 # source("executar_analises.R")
-# Executa frequências, covariâncias e regressões de sexo + raça + quartil de renda.
+# Executa frequências, covariâncias e regressões de insegurança.
 if (!file.exists("seguranca_rmbh.Rproj")) {
   stop("Abra seguranca_rmbh.Rproj ou defina setwd() para a raiz do projeto.")
 }
@@ -9,4 +9,4 @@ if (!file.exists("dados/tratados/bh_svy_2002_2005_2008.rds")) {
 }
 source("R/analise_frequencia.R", local = new.env(parent = globalenv()))
 source("R/regressoes_logisticas.R", local = new.env(parent = globalenv()))
-message("Concluído: frequências, covariâncias e regressões de sexo + raça + quartil de renda. Consulte resultados/.")
+message("Concluído: frequências, covariâncias e regressões de insegurança. Consulte resultados/.")

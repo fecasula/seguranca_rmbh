@@ -1,12 +1,8 @@
 # Especificação das análises - frequências, covariância e regressões
 
-## Ampliação com renda, exportações e covariância
-
-Esta revisão mantém as frequências por sexo, raça, idade e renda. Na matriz,
-estado civil dá lugar aos indicadores de ocorrência de desordem social. As
-regressões são reestimadas com sexo, raça e quartil de renda, mantendo a
-classificação racial binária solicitada. Há três gráficos de OR. Raça mantém roxo/verde, sem vermelho
-ou azul; os textos usam hífen em lugar de travessão.
+As análises incluem frequências, matrizes de covariância e regressões de
+insegurança ao andar na rua. As regressões incorporam desordem social nas
+rodadas que mediram a ocorrência dos problemas no bairro.
 
 ### Renda individual registrada
 
@@ -81,48 +77,65 @@ Referências técnicas primárias:
 
 ## Escopo e execução
 
-Mantêm-se os oito gráficos anteriores de frequência e seus resultados. A base
-harmonizada e os arquivos brutos são preservados. `preparar_frequencias` aplica
-a mesma recodificação racial tanto às frequências quanto às regressões.
-O executor roda os dois scripts analíticos e atualiza o relatório integrado.
-As tabelas dos novos gráficos também são retráteis e exportáveis.
+O executor atualiza as frequências, as matrizes de covariância, as regressões
+e os relatórios HTML. A base harmonizada e os arquivos brutos são preservados.
+Os resultados são apresentados separadamente para 2002, 2005 e 2008.
 
-## Desenho de trabalho e denominadores
+## Desenho amostral e denominadores
 
-As rodadas de 2002, 2005 e 2008 são analisadas separadamente. Não se presume
-identificação longitudinal dos indivíduos.
+Para cada rodada, o objeto amostral é declarado com
+`survey::svydesign(ids = ~upa, weights = ~peso_analise, data = d, nest = TRUE)`,
+em que `d` contém os registros da rodada.
 
-Peso: `peso_pos_estratificacao` (`PESO` em 2002, `pesofinal` em 2005/2008).
-Não se multiplica pelo fator de expansão nem se interpreta sua soma como
-total populacional. O desenho usa `survey::svydesign` com UPA identificada
-por rodada × município × setor censitário. Município compõe a identificação
-do setor, sem ser presumido como estrato. Sem estratos oficiais/FPC identificados,
-trata-se de um desenho de trabalho com as informações disponíveis, a revisar
-com o plano amostral original antes de inferência definitiva.
+| Argumento | Variável e origem |
+|---|---|
+| `ids = ~upa` | `upa` é a interação de `ano_rodada`, `municipio` e `setor_censitario`. Os campos de município/setor nos arquivos originais são `F2`/`F3` em 2002, `CIDADE`/`NºSETOR` em 2005 e `F3`/`F6` em 2008. |
+| `weights = ~peso_analise` | `peso_analise` é o valor numérico de `peso_pos_estratificacao`, originado de `PESO` em 2002 e `pesofinal` em 2005/2008. O código exige pesos finitos e positivos. |
+| `data = d`, `nest = TRUE` | Dados de uma única rodada, com a opção de aninhamento ativada. |
 
-O desenho é criado antes de selecionar os domínios. Cada percentual é a
-soma dos pesos dos eventos dividida pela soma dos pesos das respostas válidas
-**dentro de seu grupo e rodada**. Ausências não viram zero. São exportados n
-válido, n de eventos, somas de pesos, percentuais, erros padrão e IC95% logit.
-Proporções de exatamente 0%/100% conservam o ponto, sem fabricar um IC degenerado.
+A especificação atual omite `strata` e `fpc` pela falta de identificação dos
+estratos oficiais e da correção para população finita. Município compõe o
+identificador do setor. O fator de expansão fica fora da declaração e a soma
+dos pesos representa o denominador ponderado de trabalho. As rodadas são
+tratadas como cortes transversais. A inferência depende da adequação desse
+desenho de trabalho ao plano amostral original.
 
-## Raça: definição operacional solicitada
+O objeto de cada rodada é criado antes da seleção dos domínios e dos casos
+completos. Cada percentual é a soma dos pesos dos eventos dividida pela soma
+dos pesos das respostas válidas dentro do grupo e da rodada. São exportados
+n válido, n de eventos, somas de pesos, proporções, erros padrão e IC95%.
+Para proporções de 0% ou 100%, publica-se o ponto e o IC fica ausente.
+
+| Função do pacote `survey` | Uso |
+|---|---|
+| `svydesign()` | Declara o desenho de cada rodada. |
+| `svymean()` e `SE()` | Estimam a média ponderada do indicador binário (a proporção) e extraem seu erro padrão. |
+| `svyciprop(method = "logit")` | Estima o IC95% de proporções internas a (0, 1). |
+| `svychisq(statistic = "F")` | Testa a associação entre grupo e resposta com correção de Rao–Scott de segunda ordem. |
+| `degf()` | Fornece graus de liberdade dos desenhos usados nos IC de proporções e nos diagnósticos e verifica se há graus de liberdade suficientes para os testes de associação. |
+| `svyquantile(qrule = "math", ci = FALSE)` | Estima P25, P50 e P75 de renda para definir os quartis. |
+| `svyvar()` | Estima as matrizes de covariância ponderadas e a incerteza pelo desenho. |
+| `svyglm(family = quasibinomial(link = "logit"))` | Ajusta as regressões logísticas. Os métodos `coef()` e `vcov()` extraem coeficientes e variância pelo desenho para o cálculo de OR, EP, IC95% e p nominal. |
+| `regTermTest(method = "Wald")` | Faz o teste global de cada preditor, com os graus de liberdade residuais do modelo. |
+
+## Raça/cor
 
 | Grupo analítico | Respostas originais incluídas |
 |---|---|
-| Negros | Preto(a), Pardo(a), Indígena |
-| Brancos | Branco(a), Amarelo(a) |
-| Excluídas do recorte racial | Todas as demais respostas, incluindo Negro(a), Moreno(a), Claro(a), Pálido(a), Outra, e ausências |
+| Brancos | Branco(a) |
+| Negros | Preto(a) e Pardo(a) |
 
-É o agrupamento indicado para esta análise, sem presumir equivalência com
-outras classificações raciais. A opção original “Negro(a)” não foi incluída,
-pois a lista especificada inclui apenas preto, pardo e indígena no grupo Negros.
+As demais respostas ficam fora das análises que usam raça/cor, incluindo
+Amarelo(a), Indígena, a opção original Negro(a) da rodada de 2002 e as
+não respostas. A regra usa os rótulos originais Preto(a) e Pardo(a) para
+compor Negros.
 
-A variável nova é `raca_grupo`, fator com níveis Brancos/Negros. Nas frequências, a exclusão
-ocorre apenas no recorte por raça: não retira os mesmos entrevistados das
-frequências por sexo ou idade. Nas matrizes e regressões, raça válida é requisito
-de inclusão porque integra essas análises. `recodificacao_raca.csv` mostra a destinação
-completa dos rótulos por ano; `elegibilidade_por_recorte.csv` registra exclusões.
+`raca_grupo` é um fator com Brancos como categoria de referência. A regra
+vale para as frequências por raça/cor, as matrizes de covariância e todos os
+modelos de regressão. As frequências por sexo, idade e renda mantêm seus
+próprios critérios de elegibilidade. `recodificacao_raca.csv` registra a
+destinação de cada rótulo por rodada e `elegibilidade_por_recorte.csv`
+registra as exclusões por recorte.
 
 ## Grupo etário
 
@@ -141,11 +154,40 @@ respostas válidas, inclusive neutras em 2005/2008. Em 2002 não havia opção n
 Essa definição foi mantida. As categorias originais de segurança também ficam
 registradas nas tabelas, sem gráficos adicionais.
 
-Desordem usa somente `_ocorrencia` (Sim/Não). Os sete itens comuns em
-2005/2008 são barulho, pichações, pessoas em situação de rua, arruaça,
-vandalismo, gangues e tráfico de drogas. Prostituição aparece apenas em 2008.
-Em 2008, “Não” pode significar “não mencionou” na lista; os dados medem relato
-ou percepção. Gravidade em 2002 não foi convertida em ocorrência.
+### Como o questionário mede desordem social
+
+Em 2002, a pergunta C3 do módulo Polícia e Criminalidade leu uma lista de
+problemas da vizinhança e pediu uma avaliação de gravidade para cada um.
+As opções eram muito grave, grave, pouco grave ou não é um problema.
+Entre os itens estavam meninos de rua, gangues e tráfico de drogas. A resposta
+mede gravidade percebida e fica fora dos indicadores de ocorrência.
+
+| Etapa | 2005 | 2008 |
+|---|---|---|
+| Lista de ocorrências no bairro | C4a. Cartão de resposta, p. 6. Ler as opções 1 a 7 e permitir múltiplas marcações. | DS1. Cartão de resposta, p. 12. Ler as opções a a h e permitir múltiplas marcações. |
+| Frequência de cada problema mencionado | C4b. “Frequentemente” ou “Algumas vezes”. | DS2. “Frequentemente” ou “Às vezes”. |
+| Primeiro recurso para resolver cada problema mencionado | C4c. Cartão de resposta, p. 7. Ler as opções 1 a 8 e registrar uma única resposta. | DS3. Cartão de resposta, p. 13. Ler as opções 1 a 8 e registrar uma única resposta. |
+
+O enunciado de ocorrência e o fluxo das perguntas são equivalentes nas duas
+rodadas. A lista de 2008 acrescentou “Pessoas se prostituindo na rua” na
+posição f. Os itens compartilhados são vizinhos ou festas barulhentas,
+pichações, pessoas em situação de rua, adolescentes fazendo arruaça, danos
+a propriedades, gangues e tráfico de drogas. Em 2008, a redação de danos a
+propriedades cita estragos em prédios, carros e casas, e o item de gangues
+acrescenta exemplos de atividades. Tráfico de drogas é o item 7 de C4a em
+2005 (`C4A7`) e o item h de DS1 em 2008 (`DS1H`).
+
+Os indicadores analisados vêm de C4a e DS1. A categoria 1 é “Sim”/“Sim
+(mencionou)” e a categoria 2 é “Não”/“Não mencionou”, conforme a rodada.
+Os códigos de não resposta e não sabe ficam ausentes. Os indicadores medem
+o que a pessoa relata sobre o bairro. As respostas de frequência e de
+procura de ajuda ficam fora do cálculo de ocorrência e da contagem de itens.
+
+Fontes no repositório:
+
+- [Questionário de 2002, módulo Polícia e Criminalidade](Question%C3%A1rio%20Final%202002.zip)
+- [Questionário de 2005, perguntas C4a–C4c](Question%C3%A1rio%20A%202005%20FINAL_FOR%20TRANSLATION.doc)
+- [Questionário de 2008, módulo 4, páginas impressas 13–14](<Questionário PRMBH 2008 CORRIGIDO (1).pdf#page=13>)
 
 ## Testes e marcas dos gráficos
 
@@ -177,58 +219,71 @@ utilizada em cada teste está na coluna `familia_BH`.
 `*` indica p ajustado < 0,05; `†` indica somente p nominal < 0,05;
 `?` indica teste indisponível. Ausência de marca não demonstra igualdade.
 
-## Regressões logísticas - sexo, raça e quartil de renda
+## Regressões logísticas de insegurança
 
-Modelo por período e rodada:
+Os modelos são estimados separadamente para insegurança de dia e à noite,
+em cada rodada. As especificações são:
 
-```r
-inseguranca ~ sexo + raca_grupo + quartil_renda
-```
+| Especificação | Rodadas | Preditores |
+|---|---|---|
+| Principal | 2002 | Sexo, raça/cor e quartil de renda. |
+| Principal | 2005 e 2008 | Sexo, raça/cor, quartil de renda e relato de tráfico de drogas. |
+| Sensibilidade sem respostas neutras | 2005 e 2008 | Mesmos preditores do principal, com as respostas neutras excluídas do desfecho. |
+| Total de itens de desordem social | 2005 e 2008 | Sexo, raça/cor, quartil de renda e número de itens de ocorrência relatados. |
 
-Sexo, raça e quartil de renda entram simultaneamente, sem interação; são os
-únicos preditores. Referências: Homem, Brancos e Q1. Negros inclui pretos, pardos e indígenas; Brancos,
-brancos e amarelos. Demais respostas raciais e não respostas ficam ausentes.
-Quartil de renda é fator nominal com níveis Q1-Q4. Os cortes são ponderados por
-rodada e definidos em toda a renda válida, antes de selecionar casos completos,
-usando exatamente a função e as regras de renda das frequências. Não são
-recalculados dentro da subamostra do modelo. Empates são preservados e renda
-desconhecida não recebe quartil. Q2, Q3 e Q4 produzem três contrastes com Q1;
-não se usa um escore contínuo 1-4. O Wald global de renda testa os três contrastes
-conjuntamente, enquanto os p dos coeficientes avaliam cada comparação com Q1.
+Isso produz seis ajustes principais, quatro de sensibilidade e quatro com
+a contagem. Em 2002 o questionário avaliou gravidade e não teve resposta
+neutra de insegurança.
 
-Cada modelo seleciona casos completos no desfecho, sexo, raça e quartil de renda,
-dentro do desenho original da rodada. Idade, estado civil, município, escolaridade
-e desordem não entram na fórmula nem filtram a amostra. O intercepto é mantido.
-A exigência de renda válida pode reduzir a amostra em relação à versão anterior;
-o fluxo de perdas e n de cada modelo são atualizados. A classificação da renda é
-tratada como fixa; a variância não propaga a incerteza dos pontos de corte.
+O indicador de tráfico (`desordem_trafico_drogas_ocorrencia`) entra como fator
+binário, com “Não” ou “Não mencionou” como referência. A OR de “Sim” compara
+quem relatou o problema no bairro com quem não o relatou, mantendo sexo,
+raça/cor e quartil de renda fixos.
 
-São seis modelos principais (três anos x dois períodos). Em 2005/2008 também se
-estimam quatro modelos de sensibilidade excluindo neutros; 2002 não tinha neutros.
+No modelo adicional, `total_itens_desordem` soma um ponto para cada ocorrência
+relatada e zero para cada resposta “Não” ou “Não mencionou”. Todos os itens
+aplicados precisam ter uma resposta válida. Em 2005 a escala completa vai de
+0 a 7, e em 2008 vai de 0 a 8, incluindo prostituição. Tráfico é um dos
+componentes da contagem e fica representado dentro dela. A diferença de
+composição entre as duas listas limita a comparação direta entre rodadas.
 
-`svyglm(..., family = quasibinomial(link = "logit"))` usa os pesos amostrais
-e variância por setor. Família quasi evita tratar pesos como sucessos inteiros
-e mantém a interpretação logística. OR = exp(beta); IC e p usam os mesmos
-graus de liberdade residuais do modelo amostral. Testes globais de Wald por
-preditor ficam em CSV.
+A contagem entra como preditor numérico. Sua OR, `exp(beta)`, é o fator
+multiplicativo na chance de declarar insegurança por item adicional
+relatado, mantendo sexo, raça/cor e quartil de renda fixos. O modelo supõe
+a mesma variação na log-chance por incremento unitário ao longo da escala.
+Cada item contribui igualmente para a contagem.
 
-Não há ajuste de multiplicidade nos coeficientes de regressão desta etapa;
-as marcas da tabela são nominais. OR é razão de chances, não razão de
-prevalências. Insegurança à noite é frequente: OR não deve ser interpretada
-como aproximação automática da razão de prevalências.
+Todos os modelos têm intercepto, ajuste mútuo e termos principais sem
+interação. As referências sociodemográficas são Homem, Brancos e Q1. O
+quartil de renda é um fator nominal. Os cortes são ponderados antes da seleção
+de casos completos e são os mesmos das frequências. Q2, Q3 e Q4 produzem três
+contrastes com Q1. O teste global de Wald de renda avalia os três contrastes
+em conjunto. Os valores de p dos coeficientes avaliam cada contraste com Q1.
 
-Diagnósticos registram convergência, avisos, n, parâmetros, eventos,
-probabilidades extremas, coeficientes e erros padrão muito grandes. São
-sinais de possível instabilidade/separação, não teste formal que descarte
-todo tipo de separação. Modelos sinalizados não recebem marcas de
-significância. Casos completos podem produzir seleção: há fluxo de perdas.
-Não há imputação, seleção automática por p, interações ou desordem nessa
-etapa inicial. Associações observacionais não estabelecem causalidade.
+Cada ajuste usa casos completos no desfecho e nos seus preditores, como
+subpopulação do desenho da rodada. O fluxo de perdas é exportado por
+especificação. O modelo da contagem exige mais respostas de ocorrência que
+o modelo com tráfico isolado, de modo que os tamanhos de amostra podem
+diferir. As variâncias tratam a classificação de renda como fixa.
+
+`svyglm(..., family = quasibinomial(link = "logit"))` usa os pesos e a
+variância pelo desenho de trabalho. OR = exp(beta). Os IC95% e valores de p
+usam a distribuição t e os graus de liberdade residuais do modelo. As marcas
+de regressão são nominais, sem ajuste de multiplicidade. A OR representa uma
+razão de chances. As associações são observacionais e não permitem concluir
+causalidade.
+
+Os diagnósticos registram convergência, avisos, n, eventos, probabilidades
+extremas, coeficientes e erros padrão muito grandes. Esses sinais auxiliam a
+identificar instabilidade e separação. Modelos sinalizados ficam sem marcas
+de significância.
 
 ### Gráficos de odds ratios e dispersão
 
-As três figuras mostram Mulher/Homem (ajustada por raça e renda), Negros/Brancos
-(ajustada por sexo e renda) e Q2/Q3/Q4 em relação a Q1 (ajustadas por sexo e raça).
+As três figuras do modelo principal mostram Mulher/Homem, Negros/Brancos e
+Q2/Q3/Q4 em relação a Q1, ajustadas pelos demais preditores de cada rodada.
+Em 2005 e 2008 esse ajuste inclui relato de tráfico de drogas. As OR de
+tráfico e do total de itens são apresentadas nas tabelas.
 O painel de renda separa dia/noite em linhas e anos em colunas. O eixo OR é
 logarítmico. OR = exp(beta); barras = [exp(beta - EP), exp(beta + EP)], com EP
 robusto do desenho (`sqrt(diag(vcov(modelo)))`). A transformação mantém limites

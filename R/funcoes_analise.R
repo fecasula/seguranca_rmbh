@@ -46,6 +46,12 @@ rotulos_desordem <- c(
   desordem_prostituicao_ocorrencia = "Prostituição"
 )
 
+itens_desordem_aplicados <- function(ano) {
+  itens <- names(rotulos_desordem)
+  itens[ano %in% c(2005, 2008) &
+    (itens != "desordem_prostituicao_ocorrencia" | ano == 2008)]
+}
+
 fator_validado <- function(x, niveis, nome) {
   extras <- setdiff(unique(as.character(x[!is.na(x)])), niveis)
   if (length(extras)) stop("Categorias não previstas em ", nome, ": ",
@@ -108,11 +114,6 @@ carregar_base <- function() {
     TRUE ~ NA_character_),
     levels = c("Fundamental / alfabetização / EJA", "Médio / técnico / pré-vestibular",
                "Superior / sequencial / normal", "Pós-graduação"))
-  r <- as.character(d$raca_cor)
-  principais <- c("Branco(a)", "Preto(a)", "Pardo(a)", "Amarelo(a)", "Indígena")
-  d$raca_modelo <- factor(ifelse(is.na(r), NA_character_,
-    ifelse(r %in% principais, r, "Outras respostas")),
-    levels = c(principais, "Outras respostas"))
   # OR por dez anos; evita estimar separadamente os dois casos de 90–99 anos.
   d$idade_10 <- d$idade / 10
   d$peso_analise <- as.numeric(d[[config$peso]])

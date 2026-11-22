@@ -1,5 +1,5 @@
 #===============================================================================
-# REGRESSÕES LOGÍSTICAS - SEXO, RAÇA E QUARTIL DE RENDA
+# REGRESSÕES LOGÍSTICAS - CARACTERÍSTICAS SOCIODEMOGRÁFICAS E DESORDEM SOCIAL
 # Execute: source("R/regressoes_logisticas.R") a partir da raiz do projeto.
 # Desfechos: insegurança de dia e à noite; modelos separados por rodada.
 #===============================================================================
@@ -13,7 +13,10 @@ dir.create(pasta, recursive = TRUE, showWarnings = FALSE)
 
 # Ajuste mútuo, sem interação. Renda é fator nominal; referência Q1.
 preditores <- c("sexo", "raca_grupo", "quartil_renda")
-rotulos_preditores <- c(sexo = "Sexo", raca_grupo = "Raça", quartil_renda = "Quartil de renda")
+trafico <- "desordem_trafico_drogas_ocorrencia"
+rotulos_preditores <- c(sexo = "Sexo", raca_grupo = "Raça", quartil_renda = "Quartil de renda",
+  desordem_trafico_drogas_ocorrencia = "Tráfico de drogas relatado",
+  total_itens_desordem = "Total de itens de desordem social")
 modelos <- list()
 coeficientes <- list()
 diagnosticos <- list()
@@ -21,7 +24,7 @@ testes_globais <- list()
 fluxo_amostra <- list()
 celulas_modelo <- list()
 
-ajustar_modelo <- function(des, desfecho, ano, periodo, especificacao) {
+ajustar_modelo <- function(des, desfecho, ano, periodo, especificacao, preditores) {
   d <- des$variables
   chave <- tibble(ano_rodada = ano, periodo = periodo, especificacao = especificacao,
                   desfecho = desfecho)
@@ -102,8 +105,9 @@ ajustar_modelo <- function(des, desfecho, ano, periodo, especificacao) {
   }, character(1))
   categoria_coef <- vapply(seq_along(b), function(i) {
     v <- termo_variavel[i]
-    if (v == "Intercepto") "Intercepto" else
-      substring(names(b)[i], nchar(v) + 1L)
+    if (v == "Intercepto") return("Intercepto")
+    if (v == "total_itens_desordem") return("+1 item relatado")
+    substring(names(b)[i], nchar(v) + 1L)
   }, character(1))
   suspeita <- !is.finite(b) | !is.finite(ep) | abs(b) > 10 | ep > 5
   instabilidade_global <- !isTRUE(modelo$converged) || any(suspeita) ||
@@ -148,12 +152,21 @@ ajustar_modelo <- function(des, desfecho, ano, periodo, especificacao) {
 for (ano in sort(unique(base_analise$ano_rodada))) {
   message("Regressões: rodada ", ano)
   d <- filter(base_analise, ano_rodada == ano)
+  itens <- itens_desordem_aplicados(ano)
+  preditores_principais <- c(preditores, intersect(trafico, itens))
+  if (length(itens)) {
+    # Um item desconhecido torna a contagem ausente; só respostas "Não" somam zero.
+    d$total_itens_desordem <- rowSums(d[itens] == "Sim")
+  }
   des <- criar_desenho(d)
   for (periodo in c("dia", "noite")) {
-    ajustar_modelo(des, paste0("inseguranca_", periodo), ano, periodo, "principal")
-    if (ano %in% c(2005, 2008)) {
+    desfecho <- paste0("inseguranca_", periodo)
+    ajustar_modelo(des, desfecho, ano, periodo, "principal", preditores_principais)
+    if (length(itens)) {
       ajustar_modelo(des, paste0("inseguranca_", periodo, "_sem_neutros"),
-                    ano, periodo, "sem_neutros")
+                    ano, periodo, "sem_neutros", preditores_principais)
+      ajustar_modelo(des, desfecho, ano, periodo, "total_desordem",
+                    c(preditores, "total_itens_desordem"))
     }
   }
 }
@@ -195,7 +208,7 @@ resumir_tabela <- function(especificacao) {
       formatC(z$ic_superior, format = "f", digits = 2, decimal.mark = ","), "]",
       ifelse(z$significativo, " *", ""), "; p=", formatar_p(z$p_valor),
       ifelse(z$modelo_instavel, " [revisar modelo]", "")))
-  ordem <- c(preditores)
+  ordem <- names(rotulos_preditores)
   z <- arrange(z, match(variavel, ordem), !referencia, categoria)
   linhas <- distinct(z, variavel, variavel_rotulo, categoria)
   out <- select(linhas, Variavel = variavel_rotulo, Categoria = categoria)
@@ -208,25 +221,15 @@ resumir_tabela <- function(especificacao) {
 }
 tabela_principal <- resumir_tabela("principal")
 tabela_sensibilidade <- resumir_tabela("sem_neutros")
+tabela_desordem <- resumir_tabela("total_desordem")
 salvar_csv(tabela_principal, file.path(pasta, "tabela_modelos_principais.csv"))
 salvar_csv(tabela_sensibilidade, file.path(pasta, "tabela_sensibilidade_sem_neutros.csv"))
-conteudo <- c(
-  "<p><a href='../frequencias/indice_graficos.html'>Abrir gráficos de frequência</a></p>",
-  "<p>Regressões logísticas ponderadas (survey::svyglm, quasibinomial/logit), com erros padrão por setor e casos completos por modelo. Desfecho principal: inseguro/muito inseguro = 1; seguro/muito seguro/neutro = 0. Cada modelo usa somente sua rodada.</p>",
-  "<p>Cada modelo inclui sexo, raça (Brancos/Negros) e quartil de renda, com ajuste mútuo e sem interação. Referências: Homem, Brancos e Q1. OR &gt; 1 indica maior chance de declarar insegurança. Ausências nos campos do modelo e respostas raciais fora dos grupos definidos são excluídas por modelo.</p>",
-  "<h2>Modelo - sexo, raça e quartil de renda</h2>",
-  "<p>OR ajustado [IC95%]; p do coeficiente. * p &lt; 0,05, sem ajuste de multiplicidade nas regressões. Consulte os testes globais e o diagnóstico antes de interpretar categorias raras.</p>",
-  tabela_html(tabela_principal),
-  "<h2>Sensibilidade - excluindo respostas neutras</h2>",
-  "<p>Compara exclusivamente seguros com inseguros. Em 2002 não havia resposta neutra, portanto o modelo principal já corresponde a esta definição.</p>",
-  tabela_html(tabela_sensibilidade),
-  "<h2>Diagnósticos e tamanho das amostras</h2>", tabela_html(diagnosticos),
-  "<p>O desenho utiliza peso final e setores disponíveis. Não foram presumidos estratos oficiais. Os resultados são associações observacionais; a OR não é uma razão de prevalências ou um efeito causal.</p>")
-pagina_html("BH Survey - regressões logísticas", conteudo, file.path(pasta, "tabela_modelos.html"))
+salvar_csv(tabela_desordem, file.path(pasta, "tabela_modelos_total_desordem.csv"))
 resultado_regressao <- list(modelos = modelos, coeficientes = coeficientes,
   diagnosticos = diagnosticos, testes_globais = testes_globais, config = config,
   preditores = preditores, tabela_principal = tabela_principal,
-  tabela_sensibilidade = tabela_sensibilidade, cortes_renda = renda_preparada$cortes)
+  tabela_sensibilidade = tabela_sensibilidade, tabela_desordem = tabela_desordem,
+  cortes_renda = renda_preparada$cortes)
 saveRDS(resultado_regressao,
         file.path(pasta, "modelos_logisticos.rds"))
 source("R/plotagens_odds.R", local = TRUE)

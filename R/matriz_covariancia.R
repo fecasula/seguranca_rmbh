@@ -22,8 +22,7 @@ calcular_covariancias <- function(base, pasta) {
   amostras <- disponibilidade <- list()
   for (ano in sort(unique(base$ano_rodada))) {
     d <- filter(base, ano_rodada == ano)
-    aplicado <- ano %in% c(2005, 2008) &
-      (vars_desordem != "desordem_prostituicao_ocorrencia" | ano == 2008)
+    aplicado <- vars_desordem %in% itens_desordem_aplicados(ano)
     cod_ativos <- c(setdiff(codigos, cod_desordem), cod_desordem[aplicado])
     vars <- c("inseguranca_dia", "inseguranca_noite", names(referencias),
       vars_desordem[aplicado])

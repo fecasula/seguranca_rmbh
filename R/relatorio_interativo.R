@@ -48,21 +48,22 @@ gerar_relatorio <- function(prevalencias, covariancias, cortes, elegibilidade, p
                             regressao = NULL) {
   if (is.null(regressao) && file.exists("resultados/regressoes/modelos_logisticos.rds")) {
     anterior <- readRDS("resultados/regressoes/modelos_logisticos.rds")
-    if (identical(anterior$preditores, c("sexo", "raca_grupo", "quartil_renda"))) regressao <- anterior
+    if (!is.null(anterior$tabela_desordem)) regressao <- anterior
   }
   link_excel <- "__LINK_EXCEL__"
-  conteudo <- c("<nav><a href='#seguranca'>Insegurança</a><a href='#desordem'>Desordem social</a><a href='#renda'>Quartis de renda</a><a href='#covariancia'>Covariância</a><a href='#regressoes'>Regressões de sexo, raça e renda</a></nav>",
+  conteudo <- c("<nav><a href='#seguranca'>Insegurança</a><a href='#desordem'>Desordem social</a><a href='#renda'>Quartis de renda</a><a href='#covariancia'>Covariância</a><a href='#regressoes'>Regressões logísticas</a></nav>",
     "<p>Resultados por sexo, raça, grupo etário e quartil de renda, separados por rodada. Clique em <strong>Ver tabela</strong> abaixo de cada gráfico. As tabelas permitem busca, ordenação e exportação das linhas visíveis.</p>",
     link_excel,
     "<p>Insegurança: inseguro(a) + muito inseguro(a). Pontos ponderados; barras IC95%. * p ajustado BH &lt; 0,05; † apenas p nominal &lt; 0,05. Em idade e renda, os testes são globais entre grupos. Sem divisão por sexo nos demais recortes.</p>",
-    "<p>Raça: Negros = pretos, pardos e indígenas; Brancos = brancos e amarelos. Outras opções são excluídas apenas do recorte racial. Renda: componentes individuais declarados; quartis ponderados por rodada, com empates preservados. Não respostas não recebem zero.</p>")
+    "<p>Raça/cor: Brancos inclui somente quem respondeu Branco(a). Negros reúne Preto(a) e Pardo(a). Outras respostas e ausências ficam fora do recorte racial, das matrizes de covariância e das regressões. Renda: componentes individuais declarados, com quartis ponderados por rodada e empates preservados.</p>")
   exportacoes <- list()
   for (tipo in c("inseguranca", "desordem")) {
     bloco <- if (tipo == "inseguranca") "Insegurança" else "Ocorrência de desordem social"
     subpasta <- if (tipo == "inseguranca") "1_seguranca_sociodemograficas" else "2_desordem_social"
     conteudo <- c(conteudo, if (tipo == "inseguranca")
       "<h2 id='seguranca'>1. Segurança X Variáveis Sociodemográficas</h2>" else
-      "<h2 id='desordem'>2. Ocorrência de desordem social</h2>")
+      c("<h2 id='desordem'>2. Ocorrência de desordem social</h2>",
+        "<p>Em 2005 (C4a) e 2008 (DS1), a lista era lida e permitia marcar mais de um problema no bairro. Para cada menção, perguntava-se a frequência (C4b/DS2) e a quem a pessoa recorreria primeiro (C4c/DS3). Havia sete itens em 2005 e oito em 2008, com a inclusão de prostituição. Em 2002, a pergunta C3 media gravidade.</p>"))
     for (r in names(recortes_frequencia)) {
       dados <- filter(prevalencias, .data$bloco == .env$bloco, recorte == r)
       nome_r <- switch(r, sexo = "sexo", raca_grupo = "raca", idade_grupo = "grupo_etario", quartil_renda = "renda")
@@ -105,13 +106,14 @@ gerar_relatorio <- function(prevalencias, covariancias, cortes, elegibilidade, p
         "Valores com quatro casas; exportações preservam maior precisão. Ausências não são zero.")), "</article>"))
   }
   if (!is.null(regressao)) {
-    conteudo <- c(conteudo, "<h2 id='regressoes'>5. Regressões logísticas - sexo, raça e renda</h2>",
+    conteudo <- c(conteudo, "<h2 id='regressoes'>5. Regressões logísticas de insegurança</h2>",
       bloco_regressao(regressao, "../regressoes/"))
     exportacoes$regressoes_principais <- dados_tabela_odds(regressao$coeficientes, "principal")
     exportacoes$regressoes_sensibilidade <- dados_tabela_odds(regressao$coeficientes, "sem_neutros")
+    exportacoes$regressoes_total_desordem <- dados_tabela_odds(regressao$coeficientes, "total_desordem")
     exportacoes$diagnosticos_regressao <- regressao$diagnosticos
   }
-  conteudo <- c(conteudo, "<p>Os pesos e setores disponíveis compõem o desenho de trabalho, sem estratos oficiais presumidos. A análise de covariância é descritiva, com exclusão conjunta de ausências nos itens aplicáveis de cada rodada.</p>")
+  conteudo <- c(conteudo, "<p>O desenho amostral de trabalho usa survey::svydesign com ids = ~upa (rodada, município e setor censitário), weights = ~peso_analise (peso final) e nest = TRUE. Também usa svymean e SE para proporções e erros padrão, svyciprop para IC95%, svychisq para testes entre grupos, svyquantile para quartis, svyvar para covariâncias e svyglm e regTermTest nas regressões.</p>")
   excel_ok <- FALSE
   assinatura <- file.path(pasta, "exportacoes", "assinatura_excel.csv")
   if (file.exists(assinatura) && file.exists(file.path(pasta, "exportacoes", "tabelas_resultados.xlsx"))) {
@@ -151,9 +153,9 @@ dados_tabela_odds <- function(coeficientes, especificacao) {
 
 bloco_regressao <- function(regressao, prefixo = "") {
   conteudo <- c(
-    "<p>Modelo: logit[P(insegurança)] = intercepto + sexo + raça + quartil de renda. Ajuste mútuo, sem interação, separado por ano e período. Referências: Homem, Brancos e Q1. Entram somente entrevistas com desfecho, sexo, raça e renda válidos; idade e desordem não são critérios de inclusão da regressão.</p>",
-    "<p>Renda é um fator com quatro categorias: Q1 (menores rendas), Q2, Q3 e Q4 (maiores rendas). Cortes ponderados por rodada, calculados em toda renda válida antes da seleção dos casos do modelo, idênticos aos das frequências. Empates são preservados. As OR de renda comparam cada quartil com Q1, controlando por sexo e raça. Os gráficos de sexo e raça também foram reestimados com controle por renda.</p>",
-    "<p>Negros = pretos, pardos e indígenas; Brancos = brancos e amarelos, conforme a definição operacional do projeto. OR é a razão de chances, não uma razão de prevalências. A tabela apresenta IC95% e p nominal de Wald com os graus de liberdade residuais do desenho.</p>",
+    "<p>Modelos ponderados por rodada e período, com casos completos no desfecho e nos preditores. No modelo principal, sexo, raça/cor e quartil de renda entram em todas as rodadas. Em 2005 e 2008 entra também o relato de tráfico de drogas (Sim em relação a Não ou Não mencionou). A rodada de 2002 mediu gravidade do problema.</p>",
+    "<p>As referências são Homem, Brancos e Q1. Brancos inclui apenas Branco(a) e Negros reúne Preto(a) e Pardo(a). As demais respostas ficam fora dos modelos. Os cortes de renda são ponderados por rodada e calculados antes da seleção de casos completos.</p>",
+    "<p>OR é a razão de chances. Uma OR acima de 1 indica maior chance de declarar insegurança, mantidos fixos os demais preditores do modelo. As tabelas apresentam IC95% e p nominal de Wald com os graus de liberdade residuais do desenho.</p>",
     "<p>Nos gráficos, as barras representam <strong>±1 erro padrão (EP) de log(OR)</strong>, transformado por exp(beta ± EP). O EP quantifica a incerteza do coeficiente estimado; não é o desvio padrão das respostas individuais. Essas barras não são IC95% e não indicam significância a 5%. A tabela também exporta EP da OR por aproximação delta (OR × EP de log(OR)).</p>")
   for (v in c("sexo", "raca", "renda")) {
     var <- c(sexo = "Sexo", raca = "Raça", renda = "Quartil de renda")[[v]]
@@ -171,9 +173,14 @@ bloco_regressao <- function(regressao, prefixo = "") {
   c(conteudo,
     tabela_retratil(regressao$tabela_principal, "resumo_modelos", "Ver resumo dos seis modelos principais",
       "OR ajustada [IC95%]; p nominal. * p < 0,05."),
+    "<h3>Modelo com o total de itens de desordem social</h3>",
+    "<p>Neste modelo, o total de itens substitui o indicador isolado de tráfico, que já integra a soma. A OR representa a associação com um item adicional, mantendo sexo, raça/cor e quartil de renda fixos. A escala vai de 0 a 7 em 2005 e de 0 a 8 em 2008. Cada rodada usa todos os seus itens e exige resposta válida em cada um.</p>",
+    tabela_retratil(dados_tabela_odds(regressao$coeficientes, "total_desordem"),
+      "modelos_total_desordem", "Ver odds ratios do modelo com o total de itens",
+      "As estimativas são separadas por rodada e período. O conjunto de itens difere entre 2005 e 2008."),
     tabela_retratil(dados_tabela_odds(regressao$coeficientes, "sem_neutros"),
       "sensibilidade_modelos", "Ver sensibilidade sem respostas neutras",
-      "2005 e 2008. Em 2002 não havia opção neutra; o modelo principal já usa essa definição."),
+      "2005 e 2008, com o relato de tráfico. Em 2002 não havia opção neutra."),
     tabela_retratil(regressao$testes_globais, "testes_globais_modelos", "Ver testes globais dos preditores",
       "Wald pelo desenho. Quartil de renda: teste conjunto de Q2, Q3 e Q4 em relação a Q1, sem presumir tendência linear."),
     tabela_retratil(regressao$diagnosticos, "diagnosticos_modelos", "Ver diagnósticos e amostras"))
@@ -183,6 +190,6 @@ gerar_relatorio_regressao <- function(regressao, pasta) {
   conteudo <- c("<p><a href='../frequencias/indice_graficos.html'>Abrir relatório integrado</a></p>",
     bloco_regressao(regressao))
   arquivo <- file.path(pasta, "tabela_modelos.html")
-  pagina_html("BH Survey - regressões logísticas de sexo, raça e renda", conteudo, arquivo)
+  pagina_html("BH Survey - regressões logísticas de insegurança", conteudo, arquivo)
   adicionar_interatividade(arquivo)
 }

@@ -17,14 +17,17 @@ artificial <- tibble(raca_cor = c("Preto(a)", "Pardo(a)", "Indígena", "Amarelo(
   idade = c(18, 34, 35, 59, 60, 95, NA, 18, 60))
 x <- preparar_frequencias(artificial)
 verificar(identical(as.character(x$raca_grupo),
-  c("Negros", "Negros", "Negros", "Brancos", "Brancos", NA, NA, NA, NA)),
-  "Somente os cinco rótulos raciais indicados entram nos dois grupos")
+  c("Negros", "Negros", NA, NA, "Brancos", NA, NA, NA, NA)),
+  "Somente Branco(a), Preto(a) e Pardo(a) entram nos dois grupos")
 verificar(identical(as.character(x$idade_grupo),
   c("18–34", "18–34", "35–59", "35–59", "60+", "60+", NA, "18–34", "60+")),
   "Fronteiras de 18, 34, 35, 59 e 60 anos classificadas corretamente")
 verificar(identical(levels(d$raca_grupo), c("Brancos", "Negros")) &&
   identical(levels(d$idade_grupo), c("18–34", "35–59", "60+")),
   "Níveis dos fatores raciais e etários fixados")
+verificar(identical(which(d$raca_grupo == "Brancos"), which(d$raca_cor == "Branco(a)")) &&
+  identical(which(d$raca_grupo == "Negros"), which(d$raca_cor %in% c("Preto(a)", "Pardo(a)"))),
+  "A base usada pelas análises aplica a nova recodificação a todas as rodadas")
 
 # Cada estimativa é confrontada com n bruto e média ponderada direta.
 # O recorte por raça/idade não usa sexo como filtro.
@@ -102,23 +105,31 @@ verificar(all(f$testes$n_grupos[f$testes$recorte == "idade_grupo"] == 3) &&
   all(f$testes$interpretacao[f$testes$recorte == "idade_grupo"] == "Global entre os três grupos etários"),
   "Testes etários são globais entre três grupos")
 
-# Comparação dos arquivos fora do escopo das alterações com a versão de entrada.
+# As fontes e o código de preparo são comparados por checksum. As saídas
+# recalculadas são validadas pelos valores, independentemente de formatação.
+checksum_fonte <- function(arquivo) {
+  if (!grepl("[.](R|csv)$", arquivo)) return(unname(tools::md5sum(arquivo)))
+  # O Git pode materializar arquivos de texto com LF ou CRLF.
+  conteudo <- rawToChar(readBin(arquivo, "raw", n = file.size(arquivo)))
+  normalizado <- tempfile()
+  on.exit(unlink(normalizado))
+  writeBin(charToRaw(gsub("\r\n", "\n", conteudo, fixed = TRUE, useBytes = TRUE)), normalizado)
+  unname(tools::md5sum(normalizado))
+}
 preservados <- ler_csv("validacao/arquivos_preservados.csv")
 for (i in seq_len(nrow(preservados))) {
   arquivo <- preservados$arquivo[i]
-  verificar(file.exists(arquivo) && unname(tools::md5sum(arquivo)) == preservados$md5[i],
+  verificar(file.exists(arquivo) && checksum_fonte(arquivo) == preservados$md5[i],
     paste("Arquivo preservado nesta revisão:", arquivo))
 }
 verificar(grepl('source("R/regressoes_logisticas.R"',
   paste(readLines("executar_analises.R"), collapse = "\n"), fixed = TRUE),
-  "Executor inclui as regressões de sexo e raça")
+  "Executor inclui as regressões de insegurança")
 png <- list.files("resultados/frequencias/graficos", pattern = "[.]png$", recursive = TRUE)
 pdf <- list.files("resultados/frequencias/graficos", pattern = "[.]pdf$", recursive = TRUE)
 verificar(length(png) == 8L && length(pdf) == 8L,
   "Os oito gráficos de frequência foram exportados em PNG e PDF")
 dir.create("resultados/validacao", recursive = TRUE, showWarnings = FALSE)
-writeLines(c(paste("Validação:", format(Sys.time(), "%d/%m/%Y %H:%M:%S %Z")), verificacoes),
-  "resultados/validacao/verificacoes.txt", useBytes = TRUE)
 salvar_csv(preservados, "resultados/validacao/arquivos_preservados.csv")
 
 
@@ -170,8 +181,15 @@ for (ano in names(covs$matrizes)) {
 }
 
 reg <- readRDS("resultados/regressoes/modelos_logisticos.rds")
-verificar(identical(reg$preditores,c("sexo","raca_grupo","quartil_renda")) && length(reg$modelos)==10L,
-  "Dez modelos estimados com sexo, raça e quartil de renda")
+preditores_base <- c("sexo", "raca_grupo", "quartil_renda")
+trafico <- "desordem_trafico_drogas_ocorrencia"
+contagem <- "total_itens_desordem"
+grade <- expand.grid(ano = c(2002, 2005, 2008), periodo = c("dia", "noite"),
+  spec = c("principal", "sem_neutros", "total_desordem"), stringsAsFactors = FALSE) |>
+  filter(ano != 2002 | spec == "principal")
+nomes_esperados <- with(grade, paste(ano, periodo, spec, sep = "_"))
+verificar(identical(reg$preditores, preditores_base) && setequal(names(reg$modelos), nomes_esperados),
+  "Seis modelos principais, quatro de sensibilidade e quatro com o total de desordem")
 verificar(isTRUE(all.equal(reg$cortes_renda,f$cortes_renda,tolerance=1e-10)),
   "Regressões usam os mesmos cortes ponderados das frequências, antes da seleção dos casos")
 verificar(!is.ordered(d$quartil_renda) && identical(levels(d$quartil_renda),paste0("Q",1:4)),
@@ -180,17 +198,32 @@ verificar(all(reg$diagnosticos$status=="OK") && all(reg$diagnosticos$convergiu),
   "Todos os modelos convergiram sem alertas de instabilidade")
 for (nome in names(reg$modelos)) {
  mod <- reg$modelos[[nome]]
- termos <- attr(terms(mod),"term.labels")
- verificar(identical(termos,c("sexo","raca_grupo","quartil_renda")) && length(coef(mod))==6L,
-   paste("Fórmula contém intercepto, sexo, raça e quartil de renda:",nome))
  partes <- strsplit(nome,"_",fixed=TRUE)[[1]]
  ano <- as.integer(partes[1]); periodo <- partes[2]
  spec <- paste(partes[-c(1,2)],collapse="_")
  var_y <- paste0("inseguranca_",periodo,if(spec=="sem_neutros") "_sem_neutros" else "")
  da <- d[d$ano_rodada==ano,]
- completo <- complete.cases(da[c(var_y,"sexo","raca_grupo","quartil_renda")])
+ extra <- if (ano == 2002) character() else if (spec == "total_desordem") contagem else trafico
+ termos <- c(preditores_base, extra)
+ verificar(identical(attr(terms(mod), "term.labels"), termos) &&
+   length(coef(mod)) == 6L + length(extra), paste("Fórmula esperada:", nome))
+ if (spec == "total_desordem") {
+   itens <- grep("^desordem_.*_ocorrencia$", names(da), value = TRUE)
+   if (ano == 2005) itens <- setdiff(itens, "desordem_prostituicao_ocorrencia")
+   da[[contagem]] <- apply(da[itens], 1L, function(x) sum(x == "Sim"))
+ }
+ completo <- complete.cases(da[c(var_y, termos)])
  verificar(nrow(model.frame(mod))==sum(completo),
-   paste("Amostra exige renda válida e independe de idade e desordem:",nome))
+   paste("Amostra segue os casos completos da especificação:",nome))
+ if (spec == "total_desordem") {
+   observado <- model.frame(mod)[[contagem]]
+   verificar(is.numeric(observado) && all(observado == da[[contagem]][completo]),
+     paste("Contagem dos itens aplicados, excluindo respostas parciais:", nome))
+ } else if (ano != 2002) {
+   verificar(identical(mod$xlevels[[trafico]], c("Não", "Sim")) &&
+     identical(as.character(model.frame(mod)[[trafico]]), as.character(da[[trafico]][completo])),
+     paste("Relato de tráfico com referência Não:", nome))
+ }
  verificar(identical(mod$xlevels$sexo,c("Homem","Mulher")) &&
    identical(mod$xlevels$raca_grupo,c("Brancos","Negros")) &&
    identical(mod$xlevels$quartil_renda,paste0("Q",1:4)),
