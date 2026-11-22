@@ -1,5 +1,5 @@
-Validação: 19/10/2026 09:23:27 -03
-OK - Somente os cinco rótulos raciais indicados entram nos dois grupos
+Validação: 22/11/2026 15:50:24 -03
+OK - Somente Branco(a), Preto(a) e Pardo(a) entram nos dois grupos
 OK - Fronteiras de 18, 34, 35, 59 e 60 anos classificadas corretamente
 OK - Níveis dos fatores raciais e etários fixados
 OK - Estimativa e denominador sem filtro adicional: 2002 inseguranca_dia sexo Homem
@@ -274,17 +274,6 @@ OK - Arquivo preservado nesta revisão: dados/tratados/bh_svy_2002_2005_2008.csv
 OK - Arquivo preservado nesta revisão: dados/brutos/PRMBH_2008.sav
 OK - Arquivo preservado nesta revisão: dados/brutos/PRMBH_2002.sav
 OK - Arquivo preservado nesta revisão: dados/brutos/PRMBH_2005.sav
-OK - Arquivo preservado nesta revisão: resultados/frequencias/prevalencias_e_testes.csv
-OK - Arquivo preservado nesta revisão: resultados/frequencias/testes_diferencas_entre_grupos.csv
-OK - Arquivo preservado nesta revisão: resultados/frequencias/cortes_quartis_renda.csv
-OK - Arquivo preservado nesta revisão: resultados/frequencias/inseguranca_por_sexo.csv
-OK - Arquivo preservado nesta revisão: resultados/frequencias/inseguranca_por_raca.csv
-OK - Arquivo preservado nesta revisão: resultados/frequencias/inseguranca_por_grupo_etario.csv
-OK - Arquivo preservado nesta revisão: resultados/frequencias/inseguranca_por_renda.csv
-OK - Arquivo preservado nesta revisão: resultados/frequencias/desordem_por_sexo.csv
-OK - Arquivo preservado nesta revisão: resultados/frequencias/desordem_por_raca.csv
-OK - Arquivo preservado nesta revisão: resultados/frequencias/desordem_por_grupo_etario.csv
-OK - Arquivo preservado nesta revisão: resultados/frequencias/desordem_por_renda.csv
 OK - Executor inclui as regressões de sexo e raça
 OK - Os oito gráficos de frequência foram exportados em PNG e PDF
 OK - Corte ponderado: 2002 1
@@ -326,66 +315,92 @@ OK - Dez modelos estimados com sexo, raça e quartil de renda
 OK - Regressões usam os mesmos cortes ponderados das frequências, antes da seleção dos casos
 OK - Renda é fator nominal com quatro níveis; sem contraste polinomial ou escore contínuo
 OK - Todos os modelos convergiram sem alertas de instabilidade
-OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2002_dia_principal
-OK - Amostra exige renda válida e independe de idade e desordem: 2002_dia_principal
+OK - Fórmula e parâmetros conforme aplicação de tráfico: 2002_dia_principal
+OK - Metadados dos preditores correspondem à fórmula: 2002_dia_principal
+OK - Amostra completa nos preditores aplicáveis: 2002_dia_principal
 OK - Referências Homem, Brancos e Q1: 2002_dia_principal
 OK - Coeficientes satisfazem escore logístico ponderado: 2002_dia_principal
 OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2002_dia_principal
-OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2002_noite_principal
-OK - Amostra exige renda válida e independe de idade e desordem: 2002_noite_principal
+OK - Fórmula e parâmetros conforme aplicação de tráfico: 2002_noite_principal
+OK - Metadados dos preditores correspondem à fórmula: 2002_noite_principal
+OK - Amostra completa nos preditores aplicáveis: 2002_noite_principal
 OK - Referências Homem, Brancos e Q1: 2002_noite_principal
 OK - Coeficientes satisfazem escore logístico ponderado: 2002_noite_principal
 OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2002_noite_principal
-OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2005_dia_principal
-OK - Amostra exige renda válida e independe de idade e desordem: 2005_dia_principal
+OK - Fórmula e parâmetros conforme aplicação de tráfico: 2005_dia_principal
+OK - Metadados dos preditores correspondem à fórmula: 2005_dia_principal
+OK - Tráfico compara Sim com referência Não: 2005_dia_principal
+OK - Amostra completa nos preditores aplicáveis: 2005_dia_principal
 OK - Referências Homem, Brancos e Q1: 2005_dia_principal
 OK - Coeficientes satisfazem escore logístico ponderado: 2005_dia_principal
 OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2005_dia_principal
-OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2005_dia_sem_neutros
-OK - Amostra exige renda válida e independe de idade e desordem: 2005_dia_sem_neutros
+OK - Fórmula e parâmetros conforme aplicação de tráfico: 2005_dia_sem_neutros
+OK - Metadados dos preditores correspondem à fórmula: 2005_dia_sem_neutros
+OK - Tráfico compara Sim com referência Não: 2005_dia_sem_neutros
+OK - Amostra completa nos preditores aplicáveis: 2005_dia_sem_neutros
 OK - Referências Homem, Brancos e Q1: 2005_dia_sem_neutros
 OK - Coeficientes satisfazem escore logístico ponderado: 2005_dia_sem_neutros
 OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2005_dia_sem_neutros
-OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2005_noite_principal
-OK - Amostra exige renda válida e independe de idade e desordem: 2005_noite_principal
+OK - Fórmula e parâmetros conforme aplicação de tráfico: 2005_noite_principal
+OK - Metadados dos preditores correspondem à fórmula: 2005_noite_principal
+OK - Tráfico compara Sim com referência Não: 2005_noite_principal
+OK - Amostra completa nos preditores aplicáveis: 2005_noite_principal
 OK - Referências Homem, Brancos e Q1: 2005_noite_principal
 OK - Coeficientes satisfazem escore logístico ponderado: 2005_noite_principal
 OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2005_noite_principal
-OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2005_noite_sem_neutros
-OK - Amostra exige renda válida e independe de idade e desordem: 2005_noite_sem_neutros
+OK - Fórmula e parâmetros conforme aplicação de tráfico: 2005_noite_sem_neutros
+OK - Metadados dos preditores correspondem à fórmula: 2005_noite_sem_neutros
+OK - Tráfico compara Sim com referência Não: 2005_noite_sem_neutros
+OK - Amostra completa nos preditores aplicáveis: 2005_noite_sem_neutros
 OK - Referências Homem, Brancos e Q1: 2005_noite_sem_neutros
 OK - Coeficientes satisfazem escore logístico ponderado: 2005_noite_sem_neutros
 OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2005_noite_sem_neutros
-OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2008_dia_principal
-OK - Amostra exige renda válida e independe de idade e desordem: 2008_dia_principal
+OK - Fórmula e parâmetros conforme aplicação de tráfico: 2008_dia_principal
+OK - Metadados dos preditores correspondem à fórmula: 2008_dia_principal
+OK - Tráfico compara Sim com referência Não: 2008_dia_principal
+OK - Amostra completa nos preditores aplicáveis: 2008_dia_principal
 OK - Referências Homem, Brancos e Q1: 2008_dia_principal
 OK - Coeficientes satisfazem escore logístico ponderado: 2008_dia_principal
 OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2008_dia_principal
-OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2008_dia_sem_neutros
-OK - Amostra exige renda válida e independe de idade e desordem: 2008_dia_sem_neutros
+OK - Fórmula e parâmetros conforme aplicação de tráfico: 2008_dia_sem_neutros
+OK - Metadados dos preditores correspondem à fórmula: 2008_dia_sem_neutros
+OK - Tráfico compara Sim com referência Não: 2008_dia_sem_neutros
+OK - Amostra completa nos preditores aplicáveis: 2008_dia_sem_neutros
 OK - Referências Homem, Brancos e Q1: 2008_dia_sem_neutros
 OK - Coeficientes satisfazem escore logístico ponderado: 2008_dia_sem_neutros
 OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2008_dia_sem_neutros
-OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2008_noite_principal
-OK - Amostra exige renda válida e independe de idade e desordem: 2008_noite_principal
+OK - Fórmula e parâmetros conforme aplicação de tráfico: 2008_noite_principal
+OK - Metadados dos preditores correspondem à fórmula: 2008_noite_principal
+OK - Tráfico compara Sim com referência Não: 2008_noite_principal
+OK - Amostra completa nos preditores aplicáveis: 2008_noite_principal
 OK - Referências Homem, Brancos e Q1: 2008_noite_principal
 OK - Coeficientes satisfazem escore logístico ponderado: 2008_noite_principal
 OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2008_noite_principal
-OK - Fórmula contém intercepto, sexo, raça e quartil de renda: 2008_noite_sem_neutros
-OK - Amostra exige renda válida e independe de idade e desordem: 2008_noite_sem_neutros
+OK - Fórmula e parâmetros conforme aplicação de tráfico: 2008_noite_sem_neutros
+OK - Metadados dos preditores correspondem à fórmula: 2008_noite_sem_neutros
+OK - Tráfico compara Sim com referência Não: 2008_noite_sem_neutros
+OK - Amostra completa nos preditores aplicáveis: 2008_noite_sem_neutros
 OK - Referências Homem, Brancos e Q1: 2008_noite_sem_neutros
 OK - Coeficientes satisfazem escore logístico ponderado: 2008_noite_sem_neutros
 OK - OR, EP do desenho e barras exp(beta ± EP) conferidos: 2008_noite_sem_neutros
 OK - Referências sem incerteza artificial
-OK - Três gráficos de OR exportados em PNG e PDF
+OK - Quatro gráficos de OR exportados em PNG e PDF
 OK - Arquivos dos gráficos de OR têm conteúdo, sem exportações vazias
 OK - Assinatura PNG válida: odds_raca.png
 OK - Assinatura PNG válida: odds_renda.png
 OK - Assinatura PNG válida: odds_sexo.png
+OK - Assinatura PNG válida: odds_trafico.png
 OK - Gráfico de renda contém 18 OR: três quartis versus Q1, em seis modelos ajustados
+OK - Tráfico corresponde ao SPSS e preserva ausências: 2005
+OK - Tráfico corresponde ao SPSS e preserva ausências: 2008
+OK - Tráfico não medido em 2002 permanece ausente
+OK - Gráfico de tráfico contém quatro OR, somente de 2005/2008
+OK - Amarelos, indígenas e demais respostas fora das análises raciais: 2002
+OK - Desenho usa peso final e UPA por rodada, município e setor: 2002
+OK - Amarelos, indígenas e demais respostas fora das análises raciais: 2005
+OK - Desenho usa peso final e UPA por rodada, município e setor: 2005
+OK - Amarelos, indígenas e demais respostas fora das análises raciais: 2008
+OK - Desenho usa peso final e UPA por rodada, município e setor: 2008
 OK - Relatório usa hífen no lugar do travessão
 OK - Raça usa cores diferentes de vermelho e azul
-OK - 52 arquivos de frequência e covariância preservados em bytes.
-OK - Excel: abas Frequências, Covariâncias e Renda preservadas; aba Regressões atualizada.
-OK - Relatórios HTML: exportações, filtro e tabela das OR de renda verificados.
-OK - Três PNGs íntegros e três PDFs de uma página verificados.
+OK - Metodologia com desenho, funções survey e questionários incluída no relatório

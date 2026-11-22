@@ -1,2 +1,5 @@
-OK - resultados/frequencias/indice_graficos.html: links, tabelas retráteis, busca, ordenação por teclado, CSV/TSV/JSON, cópia, impressão, ausências e tabela das OR de renda.
-OK - resultados/regressoes/tabela_modelos.html: links, tabelas retráteis, busca, ordenação por teclado, CSV/TSV/JSON, cópia, impressão, ausências e tabela das OR de renda.
+OK - resultados/frequencias/indice_graficos.html: metodologia, links, IDs e tabela de tráfico.
+OK - resultados/regressoes/tabela_modelos.html: metodologia, links, IDs e tabela de tráfico.
+OK - docs/frequencias/indice_graficos.html: metodologia, links, IDs e tabela de tráfico.
+OK - docs/regressoes/tabela_modelos.html: metodologia, links, IDs e tabela de tráfico.
+OK - Excel aberto com openpyxl; relatórios, gráficos e planilha em docs/ coincidem com resultados/.
