@@ -23,7 +23,8 @@ jobs:
           pandoc README.md --from=gfm --to=html5 --standalone --metadata title="Segurança e desordem social na RMBH" --metadata lang=pt-BR --output=README.html
       - name: Conferir fonte preservada e atualizar hash antigo
         run: |
-          git diff --quiet origin/main -- R/preparar_dados.R
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git -C "$GITHUB_WORKSPACE" diff --exit-code 1649748f2a44e7320e5f7af5cd708420cbea726b HEAD -- R/preparar_dados.R
           Rscript --vanilla -e 'p <- read.csv("validacao/arquivos_preservados.csv",sep=";",stringsAsFactors=FALSE); i <- p$arquivo=="R/preparar_dados.R"; p$md5[i] <- unname(tools::md5sum("R/preparar_dados.R")); write.table(p,"validacao/arquivos_preservados.csv",sep=";",quote=FALSE,row.names=FALSE)'
       - name: Recalcular e validar
         run: |
@@ -69,6 +70,7 @@ jobs:
           PY
       - name: Salvar resultados verificados na branch
         run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs resultados doc/metodologia_analises.html README.html validacao/arquivos_preservados.csv
