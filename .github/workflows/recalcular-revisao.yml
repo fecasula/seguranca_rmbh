@@ -9,6 +9,10 @@ jobs:
   analises:
     runs-on: ubuntu-24.04
     container: debian:trixie
+    env:
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+      TZ: America/Sao_Paulo
     steps:
       - name: Instalar dependências
         run: |
