@@ -86,7 +86,7 @@ elegibilidade <- bind_rows(lapply(sort(unique(base_analise$ano_rodada)), functio
   bind_rows(lapply(names(recortes_frequencia), function(r) {
     tibble(ano_rodada = ano, recorte = r, n_rodada = nrow(d),
       n_elegiveis = sum(!is.na(d[[r]])), n_excluidos = sum(is.na(d[[r]])),
-      criterio = if (r == "raca_grupo") "Somente branca, amarela, preta, parda e indígena" else
+      criterio = if (r == "raca_grupo") "Somente branca, preta e parda" else
         if (r == "idade_grupo") "Idade válida: 18–34, 35–59 ou 60+" else
         if (r == "quartil_renda") "Renda individual registrada válida" else "Sexo informado")
   }))

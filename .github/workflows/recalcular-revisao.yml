@@ -1,0 +1,76 @@
+name: Recalcular e validar a revisão RMBH
+on:
+  push:
+    branches: [melhoria-metodologia-raca-trafico]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  analises:
+    runs-on: ubuntu-24.04
+    container: debian:trixie
+    steps:
+      - name: Instalar dependências
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends ca-certificates git pandoc r-base-core r-cran-dplyr r-cran-readr r-cran-survey r-cran-ggplot2 r-cran-haven r-cran-openxlsx python3-openpyxl python3-lxml
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+      - name: Gerar a metodologia HTML
+        run: |
+          pandoc doc/metodologia_analises.md --from=gfm --to=html5 --output=doc/metodologia_analises.html
+          pandoc README.md --from=gfm --to=html5 --standalone --metadata title="Segurança e desordem social na RMBH" --metadata lang=pt-BR --output=README.html
+      - name: Conferir fonte preservada e atualizar hash antigo
+        run: |
+          git diff --quiet origin/main -- R/preparar_dados.R
+          Rscript --vanilla -e 'p <- read.csv("validacao/arquivos_preservados.csv",sep=";",stringsAsFactors=FALSE); i <- p$arquivo=="R/preparar_dados.R"; p$md5[i] <- unname(tools::md5sum("R/preparar_dados.R")); write.table(p,"validacao/arquivos_preservados.csv",sep=";",quote=FALSE,row.names=FALSE)'
+      - name: Recalcular e validar
+        run: |
+          Rscript --vanilla -e 'source("executar_analises.R"); source("validacao/validar_resultados.R")'
+      - name: Conferir HTML, Excel e cópias do site
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from urllib.parse import urlparse
+          from lxml import html
+          import openpyxl
+          root=Path.cwd()
+          logs=[]
+          for arquivo in ["resultados/frequencias/indice_graficos.html","resultados/regressoes/tabela_modelos.html","docs/frequencias/indice_graficos.html","docs/regressoes/tabela_modelos.html"]:
+              p=root/arquivo
+              d=html.fromstring(p.read_text())
+              ids=d.xpath("//@id")
+              assert len(ids)==len(set(ids))
+              for n in d.xpath("//a[@href]|//img[@src]"):
+                  link=n.get("href") or n.get("src")
+                  if not urlparse(link).scheme and not link.startswith("#"):
+                      assert (p.parent/link).exists(), (arquivo,link)
+              assert "NºSETOR" in d.get_element_by_id("metodologia").text_content()
+              rows=d.get_element_by_id("odds_trafico").xpath(".//tbody/tr")
+              assert len(rows)==8
+              assert all(r.xpath("td")[0].get("data-value") in ["2005","2008"] for r in rows)
+              assert "pretos, pardos e indígenas" not in p.read_text()
+              logs.append("OK - "+arquivo+": metodologia, links, IDs e tabela de tráfico.")
+          p=root/"resultados/frequencias/exportacoes/tabelas_resultados.xlsx"
+          w=openpyxl.load_workbook(p,data_only=True)
+          rows=list(w["regressoes_principais"].values)
+          k=rows[0].index("Variavel")
+          assert any(r[k]=="Relato de tráfico de drogas" for r in rows[1:])
+          for pasta in ["frequencias","regressoes"]:
+              for p in (root/"docs"/pasta).rglob("*"):
+                  if p.is_file():
+                      assert p.read_bytes()==(root/"resultados"/p.relative_to(root/"docs")).read_bytes()
+          logs.append("OK - Excel aberto com openpyxl; relatórios, gráficos e planilha em docs/ coincidem com resultados/.")
+          (root/"resultados/validacao/relatorio_interativo.txt").write_text("\n".join(logs)+"\n")
+          print("\n".join(logs))
+          for p in (root/"resultados").glob("*/sessionInfo.txt"):
+              p.write_text("\n".join(l.rstrip() for l in p.read_text().splitlines())+"\n")
+          PY
+      - name: Salvar resultados verificados na branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs resultados doc/metodologia_analises.html README.html validacao/arquivos_preservados.csv
+          git diff --cached --quiet || git commit -m "Recalcula e valida relatórios com raça e relato de tráfico atualizados"
+          git push origin HEAD:melhoria-metodologia-raca-trafico

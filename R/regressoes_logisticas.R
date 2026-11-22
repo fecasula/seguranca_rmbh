@@ -12,8 +12,11 @@ pasta <- file.path("resultados", "regressoes")
 dir.create(pasta, recursive = TRUE, showWarnings = FALSE)
 
 # Ajuste mútuo, sem interação. Renda é fator nominal; referência Q1.
-preditores <- c("sexo", "raca_grupo", "quartil_renda")
-rotulos_preditores <- c(sexo = "Sexo", raca_grupo = "Raça", quartil_renda = "Quartil de renda")
+preditores <- c("sexo", "raca_grupo", "quartil_renda", "desordem_trafico_drogas_ocorrencia")
+# Em 2002 só foi medida gravidade, não ocorrência de tráfico.
+preditores_por_ano <- list(`2002` = preditores[1:3], `2005` = preditores, `2008` = preditores)
+rotulos_preditores <- c(sexo = "Sexo", raca_grupo = "Raça", quartil_renda = "Quartil de renda",
+  desordem_trafico_drogas_ocorrencia = "Relato de tráfico de drogas")
 modelos <- list()
 coeficientes <- list()
 diagnosticos <- list()
@@ -22,6 +25,7 @@ fluxo_amostra <- list()
 celulas_modelo <- list()
 
 ajustar_modelo <- function(des, desfecho, ano, periodo, especificacao) {
+  preditores <- preditores_por_ano[[as.character(ano)]]
   d <- des$variables
   chave <- tibble(ano_rodada = ano, periodo = periodo, especificacao = especificacao,
                   desfecho = desfecho)
@@ -210,22 +214,10 @@ tabela_principal <- resumir_tabela("principal")
 tabela_sensibilidade <- resumir_tabela("sem_neutros")
 salvar_csv(tabela_principal, file.path(pasta, "tabela_modelos_principais.csv"))
 salvar_csv(tabela_sensibilidade, file.path(pasta, "tabela_sensibilidade_sem_neutros.csv"))
-conteudo <- c(
-  "<p><a href='../frequencias/indice_graficos.html'>Abrir gráficos de frequência</a></p>",
-  "<p>Regressões logísticas ponderadas (survey::svyglm, quasibinomial/logit), com erros padrão por setor e casos completos por modelo. Desfecho principal: inseguro/muito inseguro = 1; seguro/muito seguro/neutro = 0. Cada modelo usa somente sua rodada.</p>",
-  "<p>Cada modelo inclui sexo, raça (Brancos/Negros) e quartil de renda, com ajuste mútuo e sem interação. Referências: Homem, Brancos e Q1. OR &gt; 1 indica maior chance de declarar insegurança. Ausências nos campos do modelo e respostas raciais fora dos grupos definidos são excluídas por modelo.</p>",
-  "<h2>Modelo - sexo, raça e quartil de renda</h2>",
-  "<p>OR ajustado [IC95%]; p do coeficiente. * p &lt; 0,05, sem ajuste de multiplicidade nas regressões. Consulte os testes globais e o diagnóstico antes de interpretar categorias raras.</p>",
-  tabela_html(tabela_principal),
-  "<h2>Sensibilidade - excluindo respostas neutras</h2>",
-  "<p>Compara exclusivamente seguros com inseguros. Em 2002 não havia resposta neutra, portanto o modelo principal já corresponde a esta definição.</p>",
-  tabela_html(tabela_sensibilidade),
-  "<h2>Diagnósticos e tamanho das amostras</h2>", tabela_html(diagnosticos),
-  "<p>O desenho utiliza peso final e setores disponíveis. Não foram presumidos estratos oficiais. Os resultados são associações observacionais; a OR não é uma razão de prevalências ou um efeito causal.</p>")
-pagina_html("BH Survey - regressões logísticas", conteudo, file.path(pasta, "tabela_modelos.html"))
 resultado_regressao <- list(modelos = modelos, coeficientes = coeficientes,
   diagnosticos = diagnosticos, testes_globais = testes_globais, config = config,
-  preditores = preditores, tabela_principal = tabela_principal,
+  preditores = preditores, preditores_por_ano = preditores_por_ano,
+  definicao_raca = "Brancos: Branco(a); Negros: Preto(a), Pardo(a)", tabela_principal = tabela_principal,
   tabela_sensibilidade = tabela_sensibilidade, cortes_renda = renda_preparada$cortes)
 saveRDS(resultado_regressao,
         file.path(pasta, "modelos_logisticos.rds"))

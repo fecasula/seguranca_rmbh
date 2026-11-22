@@ -17,8 +17,8 @@ artificial <- tibble(raca_cor = c("Preto(a)", "Pardo(a)", "Indígena", "Amarelo(
   idade = c(18, 34, 35, 59, 60, 95, NA, 18, 60))
 x <- preparar_frequencias(artificial)
 verificar(identical(as.character(x$raca_grupo),
-  c("Negros", "Negros", "Negros", "Brancos", "Brancos", NA, NA, NA, NA)),
-  "Somente os cinco rótulos raciais indicados entram nos dois grupos")
+  c("Negros", "Negros", NA, NA, "Brancos", NA, NA, NA, NA)),
+  "Somente Branco(a), Preto(a) e Pardo(a) entram nos dois grupos")
 verificar(identical(as.character(x$idade_grupo),
   c("18–34", "18–34", "35–59", "35–59", "60+", "60+", NA, "18–34", "60+")),
   "Fronteiras de 18, 34, 35, 59 e 60 anos classificadas corretamente")
@@ -170,7 +170,7 @@ for (ano in names(covs$matrizes)) {
 }
 
 reg <- readRDS("resultados/regressoes/modelos_logisticos.rds")
-verificar(identical(reg$preditores,c("sexo","raca_grupo","quartil_renda")) && length(reg$modelos)==10L,
+verificar(identical(reg$preditores,c("sexo","raca_grupo","quartil_renda","desordem_trafico_drogas_ocorrencia")) && length(reg$modelos)==10L,
   "Dez modelos estimados com sexo, raça e quartil de renda")
 verificar(isTRUE(all.equal(reg$cortes_renda,f$cortes_renda,tolerance=1e-10)),
   "Regressões usam os mesmos cortes ponderados das frequências, antes da seleção dos casos")
@@ -181,16 +181,21 @@ verificar(all(reg$diagnosticos$status=="OK") && all(reg$diagnosticos$convergiu),
 for (nome in names(reg$modelos)) {
  mod <- reg$modelos[[nome]]
  termos <- attr(terms(mod),"term.labels")
- verificar(identical(termos,c("sexo","raca_grupo","quartil_renda")) && length(coef(mod))==6L,
-   paste("Fórmula contém intercepto, sexo, raça e quartil de renda:",nome))
  partes <- strsplit(nome,"_",fixed=TRUE)[[1]]
  ano <- as.integer(partes[1]); periodo <- partes[2]
+ esperados <- c("sexo","raca_grupo","quartil_renda",if(ano!=2002) "desordem_trafico_drogas_ocorrencia")
+ verificar(identical(termos,esperados) && length(coef(mod)) == if(ano==2002) 6L else 7L,
+   paste("Fórmula e parâmetros conforme aplicação de tráfico:",nome))
+ verificar(identical(reg$preditores_por_ano[[as.character(ano)]],esperados),
+   paste("Metadados dos preditores correspondem à fórmula:",nome))
+ if(ano!=2002) verificar(identical(mod$xlevels$desordem_trafico_drogas_ocorrencia,c("Não","Sim")),
+   paste("Tráfico compara Sim com referência Não:",nome))
  spec <- paste(partes[-c(1,2)],collapse="_")
  var_y <- paste0("inseguranca_",periodo,if(spec=="sem_neutros") "_sem_neutros" else "")
  da <- d[d$ano_rodada==ano,]
- completo <- complete.cases(da[c(var_y,"sexo","raca_grupo","quartil_renda")])
+ completo <- complete.cases(da[c(var_y,esperados)])
  verificar(nrow(model.frame(mod))==sum(completo),
-   paste("Amostra exige renda válida e independe de idade e desordem:",nome))
+   paste("Amostra completa nos preditores aplicáveis:",nome))
  verificar(identical(mod$xlevels$sexo,c("Homem","Mulher")) &&
    identical(mod$xlevels$raca_grupo,c("Brancos","Negros")) &&
    identical(mod$xlevels$quartil_renda,paste0("Q",1:4)),
@@ -217,8 +222,8 @@ verificar(all(refs$OR==1) && all(is.na(refs$erro_padrao)) &&
   all(is.na(refs$limite_menos_1EP)), "Referências sem incerteza artificial")
 plots <- list.files("resultados/regressoes/graficos",full.names=TRUE)
 verificar(all(file.exists(file.path("resultados/regressoes/graficos",
-  c("odds_sexo.png","odds_sexo.pdf","odds_raca.png","odds_raca.pdf","odds_renda.png","odds_renda.pdf")))),
-  "Três gráficos de OR exportados em PNG e PDF")
+  c("odds_sexo.png","odds_sexo.pdf","odds_raca.png","odds_raca.pdf","odds_renda.png","odds_renda.pdf","odds_trafico.png","odds_trafico.pdf")))),
+  "Quatro gráficos de OR exportados em PNG e PDF")
 verificar(all(file.info(plots)$size > 1000),
   "Arquivos dos gráficos de OR têm conteúdo, sem exportações vazias")
 for (arquivo in plots[grepl("[.]png$",plots)]) {
@@ -230,8 +235,35 @@ renda_plot <- ler_csv("resultados/regressoes/odds_quartil_renda.csv")
 verificar(nrow(renda_plot)==18L && setequal(renda_plot$categoria,c("Q2","Q3","Q4")) &&
   all(renda_plot$especificacao=="principal"),
   "Gráfico de renda contém 18 OR: três quartis versus Q1, em seis modelos ajustados")
+# Verifica o relato de tráfico contra o SPSS, mantendo ausências.
+for(ano in c(2005,2008)) {
+ bruto <- haven::read_sav(file.path("dados/brutos",paste0("PRMBH_",ano,".sav")))
+ var <- if(ano==2005) "C4A7" else "DS1H"
+ codigo <- as.numeric(haven::zap_labels(bruto[[var]]))
+ esperado <- ifelse(codigo==1,"Sim",ifelse(codigo==2,"Não",NA_character_))
+ da <- d[d$ano_rodada==ano,]
+ verificar(identical(as.character(da$desordem_trafico_drogas_ocorrencia),esperado),
+   paste("Tráfico corresponde ao SPSS e preserva ausências:",ano))
+}
+verificar(all(is.na(d$desordem_trafico_drogas_ocorrencia[d$ano_rodada==2002])),
+ "Tráfico não medido em 2002 permanece ausente")
+trafico <- ler_csv("resultados/regressoes/odds_graficos.csv") |> filter(variavel=="desordem_trafico_drogas_ocorrencia")
+verificar(nrow(trafico)==4L && setequal(trafico$ano_rodada,c(2005,2008)) && all(trafico$categoria=="Sim"),
+ "Gráfico de tráfico contém quatro OR, somente de 2005/2008")
+for(ano in unique(d$ano_rodada)) {
+ da <- d[d$ano_rodada==ano,]
+ verificar(all(is.na(da$raca_grupo[!da$raca_cor %in% c("Branco(a)","Preto(a)","Pardo(a)") ])),
+   paste("Amarelos, indígenas e demais respostas fora das análises raciais:",ano))
+ des <- criar_desenho(da)
+ verificar(isTRUE(all.equal(as.numeric(weights(des)),da$peso_analise,tolerance=1e-12)) &&
+   length(unique(des$cluster[[1]]))==length(unique(da$upa)),
+   paste("Desenho usa peso final e UPA por rodada, município e setor:",ano))
+}
 html <- paste(readLines("resultados/frequencias/indice_graficos.html",warn=FALSE),collapse="\n")
 verificar(!grepl("—",html,fixed=TRUE), "Relatório usa hífen no lugar do travessão")
 verificar(all(!cores_frequencia$raca_grupo %in% c("#2980b9","#c0392b")), "Raça usa cores diferentes de vermelho e azul")
+verificar(grepl("svydesign",html,fixed=TRUE) && grepl("C4A7",html,fixed=TRUE) &&
+ grepl("DS1H",html,fixed=TRUE) && grepl("regTermTest",html,fixed=TRUE),
+ "Metodologia com desenho, funções survey e questionários incluída no relatório")
 writeLines(c(paste("Validação:",format(Sys.time(),"%d/%m/%Y %H:%M:%S %Z")), verificacoes), "resultados/validacao/verificacoes.txt",useBytes=TRUE)
 message(length(verificacoes), " verificações estatísticas e estruturais concluídas sem falhas.")

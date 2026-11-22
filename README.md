@@ -1,155 +1,59 @@
-# Segurança e desordem social na RMBH - sexo, raça e renda
+# Segurança e desordem social na RMBH
 
-Esta versão inclui quartil de renda na regressão logística, junto com sexo e
-raça, e acrescenta um gráfico das OR de Q2, Q3 e Q4 em relação a Q1, ajustadas
-por sexo e raça. Os gráficos de sexo e raça também são reestimados com renda.
-As frequências e matrizes de covariância da versão anterior são preservadas.
+Análises ponderadas das rodadas 2002, 2005 e 2008 do BH Survey: frequências, matrizes de covariância e regressões logísticas de insegurança ao andar na rua de dia e à noite.
 
-## Gráficos
+A [metodologia](doc/metodologia_analises.md), também incluída nos dois relatórios HTML, apresenta as variáveis originais do desenho amostral, as funções do pacote survey, os denominadores e a comparação dos questionários.
 
-| Recorte | Insegurança ao andar na rua | Percepção de desordem social |
-|---|---|---|
-| Sexo | Um painel com dia e noite; percentuais e marcações dos anexos preservados | Gráfico dos oito itens por sexo mantido |
-| Raça | Um painel com dia e noite para Brancos e Negros, sem divisão por sexo | Gráfico dos itens para Brancos e Negros, sem divisão por sexo |
-| Grupo etário | Um painel com dia e noite para 18–34, 35–59 e 60+, sem divisão por sexo | Gráfico dos itens pelos três grupos, sem divisão por sexo |
-| Quartil de renda | Um painel com dia e noite por Q1-Q4, sem divisão por sexo | Gráfico dos itens por Q1-Q4, sem divisão por sexo |
+## Raça/cor
 
-Os resultados são apresentados por rodada (2002, 2005, 2008), com pesos,
-IC95% e os testes entre os grupos. Ocorrência de desordem foi medida apenas
-em 2005/2008; prostituição foi medida apenas em 2008.
+| Grupo | Respostas originais incluídas |
+|---|---|
+| Brancos | Somente Branco(a) |
+| Negros | Preto(a) e Pardo(a) |
 
-### Agrupamentos solicitados
+Amarelos, indígenas, demais opções e ausências são excluídos das análises com raça. A resposta separada Negro(a), presente em 2002, também fica fora: não é convertida em preto/pardo. A regra é compartilhada por frequências, covariâncias e regressões. Pessoas com raça excluída continuam elegíveis nas frequências por sexo, idade e renda. As exclusões são exportadas; gráficos de raça usam roxo/verde.
 
-- **Negros:** respostas originais preto(a), pardo(a) e indígena.
-- **Brancos:** respostas originais branco(a) e amarelo(a).
-- Todas as demais opções de raça são excluídas **apenas do recorte por raça**.
-  Isso inclui a resposta original “Negro(a)”, que não consta da lista indicada
-  para inclusão. Não respostas também permanecem excluídas desse recorte.
-- **Idade:** 18–34 (18 ≤ idade < 35), 35–59 (35 ≤ idade < 60), 60+ (idade ≥ 60).
+## Modelos e questionários
 
-As análises de raça, idade e renda não fazem cruzamento ou ajuste por sexo. Pessoas com
-raça excluída continuam elegíveis nas análises por idade/sexo. O agrupamento
-racial é uma definição operacional específica desta análise.
-
-## Renda e quartis
-
-A renda individual registrada é recuperada dos SPSS originais:
-
-- 2002: T9A/T9B (trabalho principal) + T16 (segundo trabalho em casa) + T21 (outras fontes).
-- 2005: T10 (trabalho principal) + T24 (outras fontes).
-- 2008: T10 (trabalho principal) + T16 (outras fontes).
-
-Só há zero por salto quando o formulário indica ausência daquela fonte.
-NR/NS/NA e componentes desconhecidos não viram zero. Quartis são ponderados
-pelo peso final e calculados **por rodada**, usando a renda válida, antes dos
-recortes de sexo/raça/idade. Q1 é a menor renda; Q4, a maior. Empates são
-preservados, portanto os grupos não precisam conter exatamente 25%.
-Cortes e disponibilidade estão no relatório e em `cortes_quartis_renda.csv`.
-
-## Matriz de covariância
-
-Há uma matriz para cada rodada, entre insegurança de dia/noite e indicadores
-0/1 de sexo, idade, renda, raça e os oito itens de ocorrência de desordem social.
-Estado civil foi retirado. Referências: Homem, 18-34, Q1, Brancos e Não (ocorrência).
-As 17 linhas/colunas têm a mesma ordem nos três anos. Cada bloco estimável usa
-uma única amostra completa nos indicadores aplicados naquela rodada.
-
-Em 2002, ocorrência não foi aplicada: as oito linhas/colunas correspondentes
-ficam ausentes. Em 2005, apenas prostituição não foi aplicada; em 2008, os oito
-itens foram aplicados. Células cinza ou vazias significam não aplicado, nunca zero.
-Os itens não aplicados não removem entrevistas. N, aplicação e codificação estão
-no relatório. CSV, RDS e mapas de cores ficam em `covariancia/`.
-
-## Regressões e odds ratios
-
-Modelos ponderados por ano e período (dia/noite), com a fórmula:
+Em 2005/2008:
 
 ```r
-inseguranca ~ sexo + raca_grupo + quartil_renda
+inseguranca ~ sexo + raca_grupo + quartil_renda + desordem_trafico_drogas_ocorrencia
 ```
 
-São seis modelos principais e quatro de sensibilidade sem respostas neutras
-(2005/2008). Sexo, raça e renda ajustam-se mutuamente, sem interação. Referências:
-Homem, Brancos e Q1. A raça usa a mesma definição das frequências. A amostra de cada
-modelo exige desfecho, sexo, raça e renda válidos; não exige idade ou
-desordem preenchidas. Quartil é fator nominal, sem supor tendência linear.
-Os cortes ponderados por rodada são os mesmos das frequências, calculados
-antes de selecionar os casos completos do modelo. Renda ausente exclui o caso
-do modelo; não se atribuem zero ou um quartil à renda desconhecida. O desenho mantém peso final e agrupamento por setor.
+Tráfico vem de C4A7/2005 e DS1H/2008. Referências: Homem, Brancos, Q1 e Não. Casos completos no desfecho e nesses preditores, ajuste mútuo e sem interação. Em 2002, ocorrência não foi medida: mantém-se sexo, raça e renda; gravidade não é usada como substituta. Os conjuntos de ajustes diferem entre anos.
 
-Três gráficos em `resultados/regressoes/graficos/` comparam Mulher/Homem,
-Negros/Brancos e os quartis Q2/Q3/Q4 em relação a Q1, por ano e período.
-Cada OR é controlada pelos outros dois preditores. `odds_renda.png` e
-`odds_renda.pdf` reúnem os resultados de renda em um painel de dia/noite. Pontos são OR ajustadas; barras
-são `exp(beta ± EP)`, com EP pelo desenho amostral. Trata-se de ±1 erro padrão
-de log(OR), não de desvio padrão das respostas nem de IC95%. O EP da OR por
-aproximação delta (`OR * EP`) também é exportado. IC95% e p nominal ficam nas
-tabelas retráteis; não se deve usar essas barras para concluir significância a 5%.
+São seis modelos principais e quatro de sensibilidade sem respostas neutras. Quatro gráficos apresentam as OR de sexo, raça, renda e relato de tráfico; este último apenas em 2005/2008. Barras são `exp(beta ± EP)`, **não IC95%**. Tabelas incluem EP, IC95%, p nominal, n, testes globais e diagnósticos. OR é razão de chances, não razão de prevalências ou efeito causal.
 
-## Abrir os resultados
+C4a/C4b de 2005 e DS1/DS2 de 2008 mantêm o enunciado central e a frequência condicionada ao problema mencionado. Há inclusão de prostituição em 2008, mudanças de redação em vandalismo/gangues e a explicitação de “Não mencionou” em DS1. A metodologia documenta essas diferenças e as implicações para as matrizes da seção 4.
 
-Abra `resultados/frequencias/indice_graficos.html` no navegador para acessar
-os oito gráficos. Eles também estão em PNG e PDF em:
+## Desenho, renda e resultados
 
-- `resultados/frequencias/graficos/1_seguranca_sociodemograficas/`
-- `resultados/frequencias/graficos/2_desordem_social/`
+O desenho usa `survey::svydesign(ids = ~upa, weights = ~peso_analise, data = d, nest = TRUE)`, por rodada. Peso final: PESO/2002 e pesofinal/2005-2008. UPA: interação de rodada, município e setor. Não se presumem estratos oficiais/FPC, nem se multiplica peso final por fator de expansão.
 
-Cada gráfico tem uma tabela retrátil, com busca e ordenação por coluna.
-Botões CSV, TSV, JSON, copiar e imprimir/PDF exportam as linhas visíveis na
-ordem atual. A planilha `exportacoes/tabelas_resultados.xlsx` reúne os resultados
-desta execução nas abas Frequências, Covariâncias, Renda e Regressões.
-Se os dados forem recalculados e mudarem, o relatório oculta o link do Excel
-anterior para evitar uma exportação desatualizada; CSV/TSV/JSON continuam atuais.
+Quartis de renda individual registrada são ponderados por rodada, definidos antes dos recortes e com empates preservados. Q1 contém as menores rendas. Ausências não recebem zero ou quartil. Não se trata de renda domiciliar per capita.
 
-Tabelas CSV (separador `;`, decimal `,`, UTF-8) incluem percentuais,
-intervalos, denominadores, testes, recodificação da raça e exclusões por recorte.
-`resultados_frequencias.rds` preserva as tabelas; `base_frequencias.rds` contém
-uma cópia com as duas novas variáveis, sem substituir a base de referência.
+- `resultados/frequencias/indice_graficos.html`: oito gráficos de frequência, matrizes, regressões e metodologia.
+- `resultados/regressoes/tabela_modelos.html`: quatro gráficos de OR, tabelas e diagnósticos.
+- `docs/`: cópia sincronizada dos relatórios para o GitHub Pages.
 
-`resultados/regressoes/tabela_modelos.html` apresenta as tabelas exportáveis, os três gráficos e os diagnósticos dos novos modelos.
+Tabelas oferecem busca, ordenação, CSV, TSV, JSON, copiar e imprimir/PDF. Com openxlsx, o Excel é atualizado e recebe assinatura dos CSV. Os brutos e a base harmonizada são preservados.
 
-## Executar novamente
+## Executar e validar
 
-Abra `seguranca_rmbh.Rproj` no RStudio. Se necessário, instale os pacotes:
+Use a **raiz do repositório** e abra `seguranca_rmbh.Rproj`. A pasta aninhada `seguranca_rmbh/` é uma cópia histórica anterior.
 
 ```r
-install.packages(c("dplyr", "haven", "readr", "survey", "ggplot2"))
-```
-
-Execute:
-
-```r
+install.packages(c("dplyr", "haven", "readr", "survey", "ggplot2", "openxlsx"))
 source("executar_analises.R")
-# ou apenas:
-source("R/analise_frequencia.R")
-```
-
-O executor roda frequências, covariâncias e regressões. Para executar apenas
-os modelos, use `source("R/regressoes_logisticas.R")`. Os relatórios estão
-prontos para consulta, sem necessidade de executar R. A planilha Excel é um
-retrato exportado desta execução; os scripts R atualizam CSV e HTML.
-
-## Significância e validação
-
-`*` = p ajustado BH < 0,05; `†` = apenas p nominal < 0,05;
-`?` = teste indisponível. Nas análises de idade e renda, o teste é global entre os três/quatro
-grupos, não uma identificação dos pares que diferem.
-
-Os novos recortes usam ajuste BH por rodada, bloco e recorte. Por sexo,
-conservam-se os valores ajustados da primeira versão para reproduzir os anexos.
-O script verifica p nominal e contagens antes de usar essa referência;
-se não corresponderem, recalcula BH para a família atual.
-
-Para verificar matrizes, modelos e a preservação das frequências:
-
-```r
 source("validacao/validar_resultados.R")
 ```
 
-O relatório de verificação fica em `resultados/validacao/verificacoes.txt`.
-Leia `doc/metodologia_analises.md` para os denominadores, desenho de trabalho,
-regras de exclusão e testes. Não foram presumidos estratos oficiais.
+O executor atualiza frequências, covariâncias, modelos e as cópias em docs/. O renv.lock existente registra somente renv; use a instalação explícita acima. Para atualizar o fragmento metodológico e o README HTML:
 
-O `renv.lock` foi preservado e registra somente `renv`; para as dependências
-analíticas, use a instalação acima. Os anexos de referência estão em
-`doc/referencias_graficos/`.
+```sh
+pandoc doc/metodologia_analises.md --from=gfm --to=html5 --output=doc/metodologia_analises.html
+pandoc README.md --from=gfm --to=html5 --standalone --metadata title="Segurança e desordem social na RMBH" --output=README.html
+```
+
+`sessionInfo.txt` registra as versões usadas; `resultados/validacao/verificacoes.txt`, as verificações estatísticas e estruturais.
