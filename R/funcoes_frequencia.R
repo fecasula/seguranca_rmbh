@@ -10,12 +10,12 @@ cores_frequencia <- list(
 )
 
 preparar_frequencias <- function(d) {
-  # Agrupamento operacional solicitado: somente estes cinco rótulos entram.
+  # Agrupamento operacional solicitado: somente estes três rótulos entram.
   # A opção original "Negro(a)" e todas as outras opções NÃO listadas são NA.
   raca <- as.character(d$raca_cor)
   d$raca_grupo <- factor(case_when(
-    raca %in% c("Indígena", "Preto(a)", "Pardo(a)") ~ "Negros",
-    raca %in% c("Amarelo(a)", "Branco(a)") ~ "Brancos",
+    raca %in% c("Preto(a)", "Pardo(a)") ~ "Negros",
+    raca == "Branco(a)" ~ "Brancos",
     TRUE ~ NA_character_), levels = c("Brancos", "Negros"))
   d$idade_grupo <- cut(d$idade, breaks = c(18, 35, 60, Inf), right = FALSE,
                        labels = c("18–34", "35–59", "60+"))

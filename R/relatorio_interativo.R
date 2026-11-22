@@ -48,14 +48,16 @@ gerar_relatorio <- function(prevalencias, covariancias, cortes, elegibilidade, p
                             regressao = NULL) {
   if (is.null(regressao) && file.exists("resultados/regressoes/modelos_logisticos.rds")) {
     anterior <- readRDS("resultados/regressoes/modelos_logisticos.rds")
-    if (identical(anterior$preditores, c("sexo", "raca_grupo", "quartil_renda"))) regressao <- anterior
+    if (identical(anterior$preditores, c("sexo", "raca_grupo", "quartil_renda", "desordem_trafico_drogas_ocorrencia")) &&
+      identical(anterior$definicao_raca, "Brancos: Branco(a); Negros: Preto(a), Pardo(a)")) regressao <- anterior
   }
   link_excel <- "__LINK_EXCEL__"
-  conteudo <- c("<nav><a href='#seguranca'>Insegurança</a><a href='#desordem'>Desordem social</a><a href='#renda'>Quartis de renda</a><a href='#covariancia'>Covariância</a><a href='#regressoes'>Regressões de sexo, raça e renda</a></nav>",
+  conteudo <- c("<nav><a href='#metodologia'>Metodologia</a><a href='#seguranca'>Insegurança</a><a href='#desordem'>Desordem social</a><a href='#renda'>Quartis de renda</a><a href='#covariancia'>Covariância</a><a href='#regressoes'>Regressões</a></nav>",
     "<p>Resultados por sexo, raça, grupo etário e quartil de renda, separados por rodada. Clique em <strong>Ver tabela</strong> abaixo de cada gráfico. As tabelas permitem busca, ordenação e exportação das linhas visíveis.</p>",
     link_excel,
     "<p>Insegurança: inseguro(a) + muito inseguro(a). Pontos ponderados; barras IC95%. * p ajustado BH &lt; 0,05; † apenas p nominal &lt; 0,05. Em idade e renda, os testes são globais entre grupos. Sem divisão por sexo nos demais recortes.</p>",
-    "<p>Raça: Negros = pretos, pardos e indígenas; Brancos = brancos e amarelos. Outras opções são excluídas apenas do recorte racial. Renda: componentes individuais declarados; quartis ponderados por rodada, com empates preservados. Não respostas não recebem zero.</p>")
+    "<p>Raça: Negros = pretos e pardos; Brancos = somente brancos. Amarelos, indígenas e demais opções são excluídos das análises com raça. As exclusões raciais também afetam covariâncias e regressões; não retiram entrevistas das frequências por sexo, idade ou renda. Renda: componentes individuais declarados; quartis ponderados por rodada, com empates preservados. Não respostas não recebem zero.</p>")
+  conteudo <- append(conteudo, bloco_metodologia(), after = 1L)
   exportacoes <- list()
   for (tipo in c("inseguranca", "desordem")) {
     bloco <- if (tipo == "inseguranca") "Insegurança" else "Ocorrência de desordem social"
@@ -105,13 +107,31 @@ gerar_relatorio <- function(prevalencias, covariancias, cortes, elegibilidade, p
         "Valores com quatro casas; exportações preservam maior precisão. Ausências não são zero.")), "</article>"))
   }
   if (!is.null(regressao)) {
-    conteudo <- c(conteudo, "<h2 id='regressoes'>5. Regressões logísticas - sexo, raça e renda</h2>",
+    conteudo <- c(conteudo, "<h2 id='regressoes'>5. Regressões logísticas - sexo, raça, renda e relato de tráfico</h2>",
       bloco_regressao(regressao, "../regressoes/"))
     exportacoes$regressoes_principais <- dados_tabela_odds(regressao$coeficientes, "principal")
     exportacoes$regressoes_sensibilidade <- dados_tabela_odds(regressao$coeficientes, "sem_neutros")
     exportacoes$diagnosticos_regressao <- regressao$diagnosticos
   }
   conteudo <- c(conteudo, "<p>Os pesos e setores disponíveis compõem o desenho de trabalho, sem estratos oficiais presumidos. A análise de covariância é descritiva, com exclusão conjunta de ausências nos itens aplicáveis de cada rodada.</p>")
+  for (nome in names(exportacoes)) {
+    salvar_csv(exportacoes[[nome]], file.path(pasta, "exportacoes", paste0(nome, ".csv")))
+  }
+  if (requireNamespace("openxlsx", quietly = TRUE)) {
+    livro <- openxlsx::createWorkbook()
+    for (i in seq_along(exportacoes)) {
+      openxlsx::addWorksheet(livro, names(exportacoes)[i])
+      openxlsx::writeData(livro, i, exportacoes[[i]])
+      # Arquivo apenas com tabelas: retira relações padrão para desenhos e
+      # impressoras inexistentes, criadas pelo openxlsx 4.2.8.
+      livro$worksheets_rels[[i]] <- character()
+      livro$worksheets[[i]]$pageSetup <- gsub(' r:id="rId2"', "", livro$worksheets[[i]]$pageSetup, fixed = TRUE)
+    }
+    openxlsx::saveWorkbook(livro, file.path(pasta, "exportacoes", "tabelas_resultados.xlsx"), overwrite = TRUE)
+    arquivos <- file.path("exportacoes", paste0(names(exportacoes), ".csv"))
+    salvar_csv(tibble(arquivo = arquivos, md5 = unname(tools::md5sum(file.path(pasta, arquivos)))),
+      file.path(pasta, "exportacoes", "assinatura_excel.csv"))
+  }
   excel_ok <- FALSE
   assinatura <- file.path(pasta, "exportacoes", "assinatura_excel.csv")
   if (file.exists(assinatura) && file.exists(file.path(pasta, "exportacoes", "tabelas_resultados.xlsx"))) {
@@ -151,12 +171,12 @@ dados_tabela_odds <- function(coeficientes, especificacao) {
 
 bloco_regressao <- function(regressao, prefixo = "") {
   conteudo <- c(
-    "<p>Modelo: logit[P(insegurança)] = intercepto + sexo + raça + quartil de renda. Ajuste mútuo, sem interação, separado por ano e período. Referências: Homem, Brancos e Q1. Entram somente entrevistas com desfecho, sexo, raça e renda válidos; idade e desordem não são critérios de inclusão da regressão.</p>",
-    "<p>Renda é um fator com quatro categorias: Q1 (menores rendas), Q2, Q3 e Q4 (maiores rendas). Cortes ponderados por rodada, calculados em toda renda válida antes da seleção dos casos do modelo, idênticos aos das frequências. Empates são preservados. As OR de renda comparam cada quartil com Q1, controlando por sexo e raça. Os gráficos de sexo e raça também foram reestimados com controle por renda.</p>",
-    "<p>Negros = pretos, pardos e indígenas; Brancos = brancos e amarelos, conforme a definição operacional do projeto. OR é a razão de chances, não uma razão de prevalências. A tabela apresenta IC95% e p nominal de Wald com os graus de liberdade residuais do desenho.</p>",
+    "<p>Em 2005/2008: logit[P(insegurança)] = intercepto + sexo + raça + quartil de renda + relato de tráfico de drogas. Ajuste mútuo, sem interação, por ano e período. Referências: Homem, Brancos, Q1 e Não para tráfico. Casos completos nesses preditores e no desfecho. Em 2002, ocorrência de tráfico não foi medida: mantém-se o modelo com sexo, raça e renda, sem excluir casos pela ausência estrutural de tráfico. Gravidade não substitui ocorrência. Idade e demais itens de desordem não filtram os modelos.</p>",
+    "<p>Renda é um fator com quatro categorias: Q1 (menores rendas), Q2, Q3 e Q4 (maiores rendas). Cortes ponderados por rodada, calculados em toda renda válida antes da seleção dos casos do modelo, idênticos aos das frequências. Empates são preservados. As OR de renda comparam cada quartil com Q1, controlando por sexo, raça e relato de tráfico em 2005/2008; em 2002, por sexo e raça. Os conjuntos de ajustes diferem entre anos.</p>",
+    "<p>Negros = pretos e pardos; Brancos = somente brancos. Amarelos, indígenas e demais opções são excluídos. OR é a razão de chances, não uma razão de prevalências. A tabela apresenta IC95% e p nominal de Wald com os graus de liberdade residuais do desenho.</p>",
     "<p>Nos gráficos, as barras representam <strong>±1 erro padrão (EP) de log(OR)</strong>, transformado por exp(beta ± EP). O EP quantifica a incerteza do coeficiente estimado; não é o desvio padrão das respostas individuais. Essas barras não são IC95% e não indicam significância a 5%. A tabela também exporta EP da OR por aproximação delta (OR × EP de log(OR)).</p>")
-  for (v in c("sexo", "raca", "renda")) {
-    var <- c(sexo = "Sexo", raca = "Raça", renda = "Quartil de renda")[[v]]
+  for (v in c("sexo", "raca", "renda", "trafico")) {
+    var <- c(sexo = "Sexo", raca = "Raça", renda = "Quartil de renda", trafico = "Relato de tráfico de drogas")[[v]]
     tabela <- dados_tabela_odds(regressao$coeficientes, "principal") |>
       filter(Variavel == var)
     nome <- paste0("odds_", v)
@@ -181,8 +201,15 @@ bloco_regressao <- function(regressao, prefixo = "") {
 
 gerar_relatorio_regressao <- function(regressao, pasta) {
   conteudo <- c("<p><a href='../frequencias/indice_graficos.html'>Abrir relatório integrado</a></p>",
-    bloco_regressao(regressao))
+    bloco_metodologia(), bloco_regressao(regressao))
   arquivo <- file.path(pasta, "tabela_modelos.html")
-  pagina_html("BH Survey - regressões logísticas de sexo, raça e renda", conteudo, arquivo)
+  pagina_html("BH Survey - regressões logísticas de sexo, raça, renda e relato de tráfico", conteudo, arquivo)
   adicionar_interatividade(arquivo)
+}
+
+bloco_metodologia <- function() {
+  arquivo <- "doc/metodologia_analises.html"
+  if (!file.exists(arquivo)) stop("Metodologia HTML ausente: ", arquivo)
+  paste0("<details id='metodologia'><summary><strong>Metodologia: desenho amostral, funções survey e questionários</strong></summary>",
+    paste(readLines(arquivo, warn = FALSE), collapse = "\n"), "</details>")
 }
