@@ -107,6 +107,20 @@ uma cópia com as duas novas variáveis, sem substituir a base de referência.
 
 `resultados/regressoes/tabela_modelos.html` apresenta as tabelas exportáveis, os três gráficos e os diagnósticos dos novos modelos.
 
+## Atualizar um clone pelo RStudio
+
+Abra `seguranca_rmbh.Rproj` no seu clone, na branch `main`. Para buscar o
+script pela primeira vez, execute no Console:
+
+```r
+system2(Sys.which("git"), c("pull", "--ff-only", "origin", "main"))
+```
+
+Nas próximas atualizações, use `source("atualizar_projeto.R")`. O Git só
+atualiza a branch por avanço direto e avisa se houver alterações locais
+conflitantes. Para consultar a versão publicada, abra
+[resultados/frequencias/indice_graficos.html](resultados/frequencias/indice_graficos.html).
+
 ## Executar novamente
 
 Abra `seguranca_rmbh.Rproj` no RStudio. Se necessário, instale os pacotes:
