@@ -1,4 +1,4 @@
-Validação: 22/11/2026 23:28:55 UTC
+Validação: 23/11/2026 03:07:48 UTC
 OK - Somente Branco(a), Preto(a) e Pardo(a) entram nos dois grupos
 OK - Fronteiras de 18, 34, 35, 59 e 60 anos classificadas corretamente
 OK - Níveis dos fatores raciais e etários fixados
@@ -403,6 +403,7 @@ OK - Arquivos dos gráficos de OR têm conteúdo, sem exportações vazias
 OK - Assinatura PNG válida: odds_raca.png
 OK - Assinatura PNG válida: odds_renda.png
 OK - Assinatura PNG válida: odds_sexo.png
+OK - Assinatura PNG válida: odds_total_desordem.png
 OK - Gráfico de renda contém 18 OR: três quartis versus Q1, em seis modelos ajustados
 OK - Relatório usa hífen no lugar do travessão
 OK - Raça usa cores diferentes de vermelho e azul

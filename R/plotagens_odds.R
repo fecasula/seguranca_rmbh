@@ -63,3 +63,26 @@ plotar_odds <- function(coeficientes, pasta) {
   salvar_grafico(p, file.path(pasta, "graficos"), "odds_renda", altura = 7.2, largura = 12)
   invisible(dados)
 }
+
+plotar_odds_desordem <- function(coeficientes, pasta) {
+  dados <- coeficientes |>
+    filter(especificacao == "total_desordem", variavel == "total_itens_desordem") |>
+    mutate(Periodo = factor(periodo, levels = c("noite", "dia"), labels = c("Noite", "Dia")))
+  if (!nrow(dados)) return(invisible(NULL))
+
+  p <- ggplot(dados, aes(x = OR, y = Periodo)) +
+    geom_vline(xintercept = 1, linetype = "dashed", color = "#858e96") +
+    geom_errorbar(aes(xmin = ic_inferior, xmax = ic_superior),
+      orientation = "y", width = .15, linewidth = .9, color = "#176b73") +
+    geom_point(size = 3.5, color = "#176b73") +
+    facet_wrap(~ano_rodada) +
+    scale_x_log10(labels = function(x) format(x, decimal.mark = ",", trim = TRUE)) +
+    scale_y_discrete(expand = expansion(add = .55)) +
+    labs(title = "Razão de chances de insegurança por item adicional de desordem",
+      subtitle = "Ajuste por sexo, raça/cor e quartil de renda",
+      x = "Razão de chances (OR, escala logarítmica)", y = NULL,
+      caption = "Barras: IC95% pelo desenho amostral. Linha tracejada: OR = 1.\nO total inclui 7 itens em 2005 e 8 em 2008.") +
+    tema_grafico()
+  salvar_grafico(p, file.path(pasta, "graficos"), "odds_total_desordem",
+    altura = 5, largura = 12)
+}

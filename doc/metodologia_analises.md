@@ -83,9 +83,15 @@ Os resultados são apresentados separadamente para 2002, 2005 e 2008.
 
 ## Desenho amostral e denominadores
 
-Para cada rodada, o objeto amostral é declarado com
-`survey::svydesign(ids = ~upa, weights = ~peso_analise, data = d, nest = TRUE)`,
-em que `d` contém os registros da rodada.
+O código declara um objeto amostral por rodada. A construção de `upa` e
+`peso_analise` e a chamada de `survey` equivalem a:
+
+```r
+d$upa <- interaction(d$ano_rodada, d$municipio, d$setor_censitario,
+                     drop = TRUE, lex.order = TRUE)
+d$peso_analise <- as.numeric(d$peso_pos_estratificacao)
+survey::svydesign(ids = ~upa, weights = ~peso_analise, data = d, nest = TRUE)
+```
 
 | Argumento | Variável e origem |
 |---|---|
@@ -283,7 +289,8 @@ de significância.
 As três figuras do modelo principal mostram Mulher/Homem, Negros/Brancos e
 Q2/Q3/Q4 em relação a Q1, ajustadas pelos demais preditores de cada rodada.
 Em 2005 e 2008 esse ajuste inclui relato de tráfico de drogas. As OR de
-tráfico e do total de itens são apresentadas nas tabelas.
+tráfico são apresentadas nas tabelas. O gráfico do total de desordem mostra
+as quatro OR por item adicional e seus IC95%, por rodada e período.
 O painel de renda separa dia/noite em linhas e anos em colunas. O eixo OR é
 logarítmico. OR = exp(beta); barras = [exp(beta - EP), exp(beta + EP)], com EP
 robusto do desenho (`sqrt(diag(vcov(modelo)))`). A transformação mantém limites

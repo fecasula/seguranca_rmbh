@@ -234,6 +234,7 @@ saveRDS(resultado_regressao,
         file.path(pasta, "modelos_logisticos.rds"))
 source("R/plotagens_odds.R", local = TRUE)
 plotar_odds(coeficientes, pasta)
+plotar_odds_desordem(coeficientes, pasta)
 source("R/relatorio_interativo.R", local = TRUE)
 gerar_relatorio_regressao(resultado_regressao, pasta)
 # Atualiza o relatório integrado quando as frequências já estão disponíveis.

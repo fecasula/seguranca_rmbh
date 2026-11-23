@@ -152,11 +152,22 @@ dados_tabela_odds <- function(coeficientes, especificacao) {
 }
 
 bloco_regressao <- function(regressao, prefixo = "") {
+  desenho <- c(
+    "<h3>Desenho amostral</h3>",
+    "<pre><code>survey::svydesign(ids = ~upa, weights = ~peso_analise, data = d, nest = TRUE)</code></pre>",
+    "<p>Em cada rodada, d contém os dados daquela rodada. A variável upa combina ano_rodada, municipio e setor_censitario. Nos dados originais, os campos município/setor são F2/F3 (2002), CIDADE/NºSETOR (2005) e F3/F6 (2008). peso_analise usa peso_pos_estratificacao, que vem de PESO em 2002 e pesofinal em 2005 e 2008. A declaração omite strata e fpc.</p>")
+  grafico_desordem <- if (any(regressao$coeficientes$variavel == "total_itens_desordem")) {
+    caminho <- paste0(prefixo, "graficos/odds_total_desordem")
+    paste0("<img loading='lazy' src='", caminho,
+      ".png' alt='Razão de chances de insegurança por item adicional, com IC95%, por ano e período'>",
+      "<p><a href='", caminho, ".png'>Gráfico PNG</a> · <a href='", caminho,
+      ".pdf'>Gráfico PDF</a></p>")
+  }
   conteudo <- c(
     "<p>Modelos ponderados por rodada e período, com casos completos no desfecho e nos preditores. No modelo principal, sexo, raça/cor e quartil de renda entram em todas as rodadas. Em 2005 e 2008 entra também o relato de tráfico de drogas (Sim em relação a Não ou Não mencionou). A rodada de 2002 mediu gravidade do problema.</p>",
     "<p>As referências são Homem, Brancos e Q1. Brancos inclui apenas Branco(a) e Negros reúne Preto(a) e Pardo(a). As demais respostas ficam fora dos modelos. Os cortes de renda são ponderados por rodada e calculados antes da seleção de casos completos.</p>",
     "<p>OR é a razão de chances. Uma OR acima de 1 indica maior chance de declarar insegurança, mantidos fixos os demais preditores do modelo. As tabelas apresentam IC95% e p nominal de Wald com os graus de liberdade residuais do desenho.</p>",
-    "<p>Nos gráficos, as barras representam <strong>±1 erro padrão (EP) de log(OR)</strong>, transformado por exp(beta ± EP). O EP quantifica a incerteza do coeficiente estimado; não é o desvio padrão das respostas individuais. Essas barras não são IC95% e não indicam significância a 5%. A tabela também exporta EP da OR por aproximação delta (OR × EP de log(OR)).</p>")
+    "<p>Nos gráficos de sexo, raça e renda, as barras representam <strong>±1 erro padrão (EP) de log(OR)</strong>, transformado por exp(beta ± EP). O EP quantifica a incerteza do coeficiente estimado; não é o desvio padrão das respostas individuais. Essas barras não são IC95% e não indicam significância a 5%. A tabela também exporta EP da OR por aproximação delta (OR × EP de log(OR)).</p>")
   for (v in c("sexo", "raca", "renda")) {
     var <- c(sexo = "Sexo", raca = "Raça", renda = "Quartil de renda")[[v]]
     tabela <- dados_tabela_odds(regressao$coeficientes, "principal") |>
@@ -170,11 +181,12 @@ bloco_regressao <- function(regressao, prefixo = "") {
       tabela_retratil(tabela, nome, "Ver tabela de odds ratios",
         "Referências têm OR = 1 por definição, sem EP estimado. Barras dos gráficos: exp(beta ± 1 EP). IC95% estão em colunas separadas."), "</article>"))
   }
-  c(conteudo,
+  c(conteudo, desenho,
     tabela_retratil(regressao$tabela_principal, "resumo_modelos", "Ver resumo dos seis modelos principais",
       "OR ajustada [IC95%]; p nominal. * p < 0,05."),
     "<h3>Modelo com o total de itens de desordem social</h3>",
     "<p>Neste modelo, o total de itens substitui o indicador isolado de tráfico, que já integra a soma. A OR representa a associação com um item adicional, mantendo sexo, raça/cor e quartil de renda fixos. A escala vai de 0 a 7 em 2005 e de 0 a 8 em 2008. Cada rodada usa todos os seus itens e exige resposta válida em cada um.</p>",
+    grafico_desordem,
     tabela_retratil(dados_tabela_odds(regressao$coeficientes, "total_desordem"),
       "modelos_total_desordem", "Ver odds ratios do modelo com o total de itens",
       "As estimativas são separadas por rodada e período. O conjunto de itens difere entre 2005 e 2008."),
