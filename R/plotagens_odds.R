@@ -75,6 +75,8 @@ plotar_odds_desordem <- function(coeficientes, pasta) {
     geom_errorbar(aes(xmin = ic_inferior, xmax = ic_superior),
       orientation = "y", width = .15, linewidth = .9, color = "#176b73") +
     geom_point(size = 3.5, color = "#176b73") +
+    geom_text(aes(label = formatC(OR, digits = 3, format = "f", decimal.mark = ",")),
+      nudge_y = .17, size = 4, fontface = "bold", color = "#176b73") +
     facet_wrap(~ano_rodada) +
     scale_x_log10(labels = function(x) format(x, decimal.mark = ",", trim = TRUE)) +
     scale_y_discrete(expand = expansion(add = .55)) +
